@@ -29,6 +29,9 @@ public:
 };
 
 //calculate system escape time (millisecond)
-int64_t EscapeTime(SystemTime& stBegin, SystemTime& stEnd);
+int64_t EscapeTime(const SystemTime& stBegin, const SystemTime& stEnd);
+
+//calcuate usgage of processor
+float CalcProcessorUsage(const SystemTime &begin, const SystemTime &end); 
 
 #endif //__SYSTEM_TIME_H__

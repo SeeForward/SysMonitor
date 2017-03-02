@@ -65,7 +65,7 @@ SystemTime SystemTime::Now()
 	return st;
 }
 
-int64_t EscapeTime(SystemTime& stBegin, SystemTime& stEnd)
+int64_t EscapeTime(const SystemTime& stBegin, const SystemTime& stEnd)
 {
 	size_t cpuNum = GetCpuNumber();
 #ifdef __WINDOWS__
@@ -74,3 +74,19 @@ int64_t EscapeTime(SystemTime& stBegin, SystemTime& stEnd)
 	return 1000 * (stEnd.m_system - stBegin.m_system) / HZ / cpuNum;
 #endif //__WINDOWS__
 }
+
+float CalcProcessorUsage(const SystemTime &begin, const SystemTime &end) 
+{
+	uint64_t elapseSys = end.m_system - begin.m_system;
+	if (elapseSys <= 0) {
+		return 0.0;
+	}
+
+	uint64_t idle = end.m_idle - begin.m_idle;
+	if (idle <= 0) {
+		return 0.0;
+	}
+
+	return (float)(100 * (elapseSys - idle) / (double)elapseSys);
+}
+
