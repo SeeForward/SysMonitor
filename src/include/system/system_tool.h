@@ -29,6 +29,9 @@ int IsPhysDisk(uint32_t major, uint32_t minor);
 #ifdef __WINDOWS__
 //impove privilege of the current process (Windows) 
 bool EnablePrivileges();
+
+//calculate the count of bit which was set 1 in ULONG_PTR
+DWORD CountSetBits(ULONG_PTR bitMask);
 #endif //__WINDOWS__
 
 #endif //__SYSTEM_TOOL_H__
