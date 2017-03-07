@@ -15,12 +15,6 @@ size_t GetCpuNumber();
 //get all pids of process which is running 
 bool GetPids(std::vector<int32_t> &pids);
 
-//get the mapping of pid and process name
-bool GetPidNameMap(std::map<int32_t, std::string> &mapPidName);
-
-//get the process name by pid
-std::string GetNameByPid(int32_t pid);
-
 #ifdef __LINUX__
 //determine whether is a physical disk
 int IsPhysDisk(uint32_t major, uint32_t minor);
