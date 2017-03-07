@@ -11,15 +11,15 @@ class LogiDiskInfo
 public:
 	LogiDiskInfo() 
 	{
-		m_totalBytes = 0;
-		m_availBytes = 0;
+		m_total = 0;
+		m_avail = 0;
 	}
 
 public:
 	std::string m_name;
-	float m_usage;			//usage rate(%)
-	uint64_t m_totalBytes;		//total size(byte)
-	uint64_t m_availBytes;		//availible size(byte)
+	float       m_usage;		//usage rate(%)
+	uint64_t    m_total;		//total size(byte)
+	uint64_t    m_avail;		//availible size(byte)
 };
 
 //physical disk's information
@@ -28,13 +28,13 @@ class PhysDiskInfo
 public:
 	PhysDiskInfo() 
 	{
-		m_totalBytes = 0;
+		m_total = 0;
 	}
 
 public:
 	std::string m_name;
 	std::string m_model;
-	uint64_t m_totalBytes;	//total size(byte)
+	uint64_t    m_total;	//total size(byte)
 };
 
 

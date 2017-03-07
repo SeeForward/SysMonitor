@@ -20,8 +20,8 @@ public:
 	std::string m_name;
 	std::string m_desc;
 	std::string m_physAddr;
+	uint64_t    m_speed;		//(Mbit/s)
 	std::vector<std::string> m_ipAddrs;
-	uint64_t m_speed;		//(Mbit/s)
 };
 
 #endif //__NETWORK_INFO_H__

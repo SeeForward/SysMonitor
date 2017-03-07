@@ -54,7 +54,7 @@ bool ProcessorInfo::GetInfo()
 
  	DWORD cnt = len / sizeof(SYSTEM_LOGICAL_PROCESSOR_INFORMATION);
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION ptr = pslpi;
-	for (DWORD i = 0; i < cnt; ++i)
+	for(DWORD i = 0; i < cnt; ++i)
 	{
 		switch (ptr[i].Relationship) 
 		{

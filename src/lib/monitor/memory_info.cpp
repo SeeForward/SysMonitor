@@ -1,5 +1,5 @@
 #include "memory_info.h"
-#include "memory_state.h"
+#include "memory_usage.h"
 
 #ifdef __WINDOWS__
 #	include <Windows.h>
@@ -17,6 +17,10 @@
 #	include <dirent.h>
 #	include <stdlib.h>
 #endif //__WINDOWS__
+
+#include <string>
+
+using std::string;
 
 bool MemoryInfo::GetInfo() 
 {
@@ -37,8 +41,8 @@ bool MemoryInfo::GetInfo()
 		return false;
 	}
 
-	if (!sscanf(vecRet[0].c_str(), "%llu", &m_singleBytes)) {
-		m_singleBytes = 0;
+	if (!sscanf(vecRet[0].c_str(), "%llu", &m_single)) {
+		m_single = 0;
 	}
 
 	m_manufacturer = vecRet[1].empty() ? "Unknow" : vecRet[1];
@@ -156,8 +160,8 @@ bool MemoryInfo::GetInfo()
 	while (fgets(buf, sizeof(buf), fp)) 
 	{
 		if(strstr(buf, "Size:")) {
-			sscanf(buf, "%*s %"PRIu64, &m_singleBytes);
-			m_singleBytes *= 1024 * 1024;
+			sscanf(buf, "%*s %"PRIu64, &m_single);
+			m_single *= 1024 * 1024;
 			++getItemNum;
 		} else if(strstr(buf, "Type:")) {
 			char type[32];
@@ -185,19 +189,19 @@ bool MemoryInfo::GetInfo()
 		return false;
 	}
 #endif //__WINDOWS__
-	MemoryState ms;
-	if (!ms.GetMemoryState()) {
+	MemoryUsage ms;
+	if (!ms.GetUsage()) {
 		return false;
 	}
 	
-	m_totalBytes = ms.m_totalPhys;
-	if (m_totalBytes && m_singleBytes) 
+	m_total = ms.m_totalPhys;
+	if (m_total && m_single) 
 	{
-		m_number = (int32_t)(m_totalBytes / m_singleBytes);
-		if (m_totalBytes % m_singleBytes) {
+		m_number = (int32_t)(m_total / m_single);
+		if (m_total % m_single) {
 			++m_number;
 		}
-		m_totalBytes = m_singleBytes * m_number;
+		m_total = m_single * m_number;
 	}
 	return true;
 }

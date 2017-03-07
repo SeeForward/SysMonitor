@@ -51,15 +51,15 @@ bool DiskInfo::GetLogiDiskInfos(vector<LogiDiskInfo> &vecLdi)
 		}
 
 		if (!::GetDiskFreeSpaceEx(vecName[i].c_str(), 
-										(PULARGE_INTEGER)&ldi.m_availBytes, 
-										(PULARGE_INTEGER)&ldi.m_totalBytes, 
-										(PULARGE_INTEGER)&usedBytes)) 
+								(PULARGE_INTEGER)&ldi.m_avail, 
+								(PULARGE_INTEGER)&ldi.m_total, 
+								(PULARGE_INTEGER)&usedBytes)) 
 		{
 			continue;
 		}
 		ldi.m_name = vecName[i];
-		if (ldi.m_totalBytes > 0) {
-			ldi.m_usage = (float)(100 * (ldi.m_totalBytes - ldi.m_availBytes) / (double) ldi.m_totalBytes);
+		if (ldi.m_total > 0) {
+			ldi.m_usage = (float)(100 * (ldi.m_total - ldi.m_avail) / (double) ldi.m_total);
 		}
 		vecLdi.push_back(ldi);
 	}
@@ -88,9 +88,9 @@ bool DiskInfo::GetLogiDiskInfos(vector<LogiDiskInfo> &vecLdi)
 		//The size of bytes in a block
 		uint32_t blockSize = diskInfo.f_bsize;
 
-		ldi.m_totalBytes = blockSize * diskInfo.f_blocks;
-		ldi.m_availBytes = diskInfo.f_bfree * blockSize;
-		ldi.m_usage = 100 * (ldi.m_totalBytes - ldi.m_availBytes) / (double)ldi.m_totalBytes;
+		ldi.m_total = blockSize * diskInfo.f_blocks;
+		ldi.m_avail = diskInfo.f_bfree * blockSize;
+		ldi.m_usage = 100 * (ldi.m_total - ldi.m_avail) / (double)ldi.m_total;
 
 		vecLdi.push_back(ldi);
 	}
@@ -138,9 +138,9 @@ bool DiskInfo::GetPhysDiskInfos(vector<PhysDiskInfo> &vecPdi)
 			memset (buf, 0, sizeof(buf));
 			if (::DeviceIoControl (hIoctl, IOCTL_DISK_GET_DRIVE_GEOMETRY_EX, NULL, 0, &buf, sizeof(buf), &cbBytesReturned, NULL)) {
 				DISK_GEOMETRY_EX* geom = (DISK_GEOMETRY_EX*)&buf;   
-				pdi.m_totalBytes = geom->DiskSize.QuadPart;
+				pdi.m_total = geom->DiskSize.QuadPart;
 			} else {
-				pdi.m_totalBytes = 0;
+				pdi.m_total = 0;
 			}
 		}
 		::CloseHandle (hIoctl);
@@ -166,7 +166,7 @@ bool DiskInfo::GetPhysDiskInfos(vector<PhysDiskInfo> &vecPdi)
 		}
 		pdi.m_name = vecPdn[i];
 		pdi.m_model = GetPhysDiskModel(vecPdn[i]);
-		pdi.m_totalBytes = GetPhysDiskSize(vecPdn[i]);
+		pdi.m_total = GetPhysDiskSize(vecPdn[i]);
 
 		vecPdi.push_back(pdi);
 	}
