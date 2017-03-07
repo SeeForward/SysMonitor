@@ -1,7 +1,7 @@
 ﻿//Date:2016-3-7
 //Author:lidengke
 
-#include "memory_state.h"
+#include "memory_usage.h"
 #include "system_tool.h"
 
 #ifdef __WINDOWS__
@@ -25,7 +25,7 @@
 
 using std::string;
 
-bool MemoryState::GetState() 
+bool MemoryUsage::GetUsage() 
 {
 #ifdef __WINDOWS__
 	MEMORYSTATUSEX mse;
@@ -86,5 +86,4 @@ bool MemoryState::GetState()
 #endif //__WINDOWS__
 	return true;
 }
-
 

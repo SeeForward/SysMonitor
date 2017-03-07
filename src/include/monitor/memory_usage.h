@@ -1,18 +1,18 @@
-﻿//Date:2016-3-4
+﻿//Date:2017-3-2
 //Author:lidengke
-//Desc:query the information and state about physical memory and virtual memory
+//Desc:query the usage about physical memory and virtual memory
 
-#ifndef __MEMORY_STATE_H__
-#define __MEMORY_STATE_H__
+#ifndef __MEMORY_USAGE_H__
+#define __MEMORY_USAGE_H__
 
 #include "type_def.h"
 #include "memory_info.h"
 
 
-class MemoryState 
+class MemoryUsage 
 {
 public:
-	MemoryState() 
+	MemoryUsage() 
 	{
 		m_usage = 0.0;
 		m_totalPhys = 0;
@@ -21,15 +21,15 @@ public:
 		m_availVirt = 0;
 	}
 
-	//get memory's state
-	bool GetState();
+	//get memory's usage
+	bool GetUsage();
 
 public:
-	float 	m_usage;	//usage rate(%)
+	float 	 m_usage;	//usage rate(%)
 	uint64_t m_totalPhys;	//total physical size (byte)
 	uint64_t m_availPhys;	//availible physical size (byte)
 	uint64_t m_totalVirt;	//total virtual size (byte)
 	uint64_t m_availVirt;	//availible virtual size (byte)
 };
 
-#endif //__MEMORY_STATE_H__
+#endif //__MEMORY_USAGE_H__
