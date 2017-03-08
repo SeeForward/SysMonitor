@@ -1,5 +1,5 @@
 #ifndef __PROCESS_NAME_H__
-#define __PROCESS_NAME-H__
+#define __PROCESS_NAME_H__
 
 #include "type_def.h"
 #include <map>
