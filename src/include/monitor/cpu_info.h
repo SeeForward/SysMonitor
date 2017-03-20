@@ -11,7 +11,7 @@ public:
 	ProcessorInfo();
 
 	//get processor's information
-	bool GetInfo();
+	bool Get();
 
 private:
 	void Clear(); 

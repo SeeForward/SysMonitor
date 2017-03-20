@@ -14,6 +14,10 @@ public:
 	std::string GetNameByPid(int32_t pid);
 
 private:
+	//make only get object by Inst()
+	ProcessName();
+
+private:
 	//get the mapping of pid and process name
 	bool GetMap();
 
