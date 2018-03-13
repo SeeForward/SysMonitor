@@ -152,7 +152,11 @@ bool MemoryInfo::GetInfo()
 		fp = popen("/usr/sbin/decode -t memory 2> /dev/null | grep -m1 -A 15 'Memory Device'", "r");
 		if (!fgets(buf, sizeof(buf), fp)) {
 			pclose(fp);
-			return false;
+			fp = popen("dmidecode -t memory 2> /dev/null | grep -m1 -A 15 'Memory Device'", "r");
+			if (!fgets(buf, sizeof(buf), fp)) {
+				pclose(fp);
+				return false;
+			}
 		}
 	}
 
