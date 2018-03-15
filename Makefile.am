@@ -1,4 +1,4 @@
 AUTOMAKE_OPTIONS=foreign
-SUBDIRS=src/lib src/lib/system src/lib/monitor src/app
+SUBDIRS=src/lib src/lib/system src/lib/monitor src/test/system src/test/monitor src/app
 INCLUDES=-I$(srcdir)/src/include
 export INCLUDES

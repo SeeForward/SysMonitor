@@ -1,11 +1,11 @@
 #                                               -*- Autoconf -*-
 # Process this file with autoconf to produce a configure script.
 
-AC_PREREQ([2.63])
+AC_PREREQ([2.69])
 AC_INIT([monitor], [1.0], [v-lidengke@foxmail.com])
 AC_CONFIG_SRCDIR([src/app/sys_monitor.cpp])
+AC_CONFIG_SRCDIR([config.h.in])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE(monitor, 1.0)
 
 # Checks for programs.
 AC_PROG_CXX
@@ -18,7 +18,7 @@ AC_PROG_RANLIB
 AC_CHECK_HEADERS([arpa/inet.h fcntl.h inttypes.h mntent.h stdlib.h string.h sys/ioctl.h sys/param.h sys/socket.h sys/vfs.h unistd.h])
 
 # Checks for typedefs, structures, and compiler characteristics.
-AC_HEADER_STDBOOL
+AC_CHECK_HEADER_STDBOOL
 AC_TYPE_INT16_T
 AC_TYPE_INT32_T
 AC_TYPE_INT64_T
@@ -34,8 +34,10 @@ AC_FUNC_GETMNTENT
 AC_CHECK_FUNCS([getmntent inet_ntoa memset socket strchr strstr uname])
 
 AC_CONFIG_FILES([Makefile
+                 src/app/Makefile
                  src/lib/Makefile
                  src/lib/monitor/Makefile
                  src/lib/system/Makefile
-                 src/app/Makefile])
+                 src/test/monitor/Makefile
+                 src/test/system/Makefile])
 AC_OUTPUT
