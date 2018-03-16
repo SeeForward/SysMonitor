@@ -13,6 +13,7 @@
 #	include <stdio.h>
 #	include <string.h>
 #	include <stdlib.h>
+#   include <unistd.h>
 #	include <linux/major.h>
 #	include <scsi/sg.h>
 #	include <scsi/scsi_ioctl.h>
@@ -43,6 +44,15 @@
 using std::map;
 using std::vector;
 using std::string;
+
+void SleepMs(uint32_t ms)
+{
+#ifdef __WINDOWS__
+		Sleep(ms);
+#else
+		usleep(ms * 1000);
+#endif //__WINDOWS__
+}
 
 size_t GetCpuNumber() 
 {

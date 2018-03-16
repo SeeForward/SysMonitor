@@ -6,6 +6,8 @@
 #define __SYSTEM_TIME_H__
 
 #include "type_def.h"
+#include <string>
+#include <sstream>
 
 //time of cpu
 class SystemTime {
@@ -17,6 +19,8 @@ public:
 		m_kernel = 0;
 		m_user = 0;
 	}
+
+	std::string ToStr();
 
 	//get current cpu time
 	static SystemTime Now();

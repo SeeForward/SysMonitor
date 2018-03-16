@@ -14,6 +14,13 @@
 #	include <sys/param.h>
 #endif //__WINDOWS__
 
+std::string SystemTime::ToStr()
+{
+	std::stringstream ss;
+	ss << "[system:" << m_system << ", idle:" << m_idle 
+		<< ", m_kernel:" << m_kernel << ", m_user" << m_user << "]";
+	return ss.str(); 
+}
 
 SystemTime SystemTime::Now() 
 {

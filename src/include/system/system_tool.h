@@ -9,6 +9,8 @@
 #include <vector>
 #include <string>
 
+void SleepMs(uint32_t ms);
+
 //get the number of the logical processors
 size_t GetCpuNumber();
 
