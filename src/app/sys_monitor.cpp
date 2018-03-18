@@ -190,16 +190,11 @@ void PrintUsage()
 
 void PrintSystemInfo()
 {
-#ifdef __WINDOWS__
-	cout << "\tOS\t: Windows" << endl;
-#else
-	cout << "\tOS : Linux" << endl;
-#endif //__WINDOWS__
 	SystemInfo si;
-	si.GetInfo();
-	cout << "\tDesc\t: " << si.m_name << endl;
-	cout << "\tVersion\t: " << si.m_version << endl;
-	cout << "\tArch\t: " << si.m_arch << endl;
+	cout << "\tName\t: " << si.Name() << endl;
+	cout << "\tDesc\t: " << si.Desc() << endl;
+	cout << "\tVersion\t: " << si.Version() << endl;
+	cout << "\tArch\t: " << si.Arch() << endl;
 }
 void TestProcessor()
 {
@@ -504,7 +499,7 @@ void PrintCpuProcUsage()
 
 void PrintMemoryInfo()
 {
-	//»ñÈ¡ÄÚ´æÐÅÏ¢
+	//ï¿½ï¿½È¡ï¿½Ú´ï¿½ï¿½ï¿½Ï¢
 	MemoryInfo mi;
 	if(mi.GetInfo()) {
 
@@ -522,7 +517,7 @@ void PrintMemoryInfo()
 
 void PrintMemoryUsage()
 {
-	//»ñÈ¡ÄÚ´æ×´Ì¬
+	//ï¿½ï¿½È¡ï¿½Ú´ï¿½×´Ì¬
 	MemoryUsage mu;
 
 	cout.setf(ios::left);
@@ -574,7 +569,7 @@ void PrintMemoryProcUsage()
 
 void PrintLogicDiskInfo()
 {
-	//»ñÈ¡Âß¼­´ÅÅÌÐÅÏ¢
+	//ï¿½ï¿½È¡ï¿½ß¼ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	DiskInfo du;
 	vector<LogiDiskInfo> vecLdi;
 	if(du.GetLogiDiskInfos(vecLdi)) {
@@ -597,7 +592,7 @@ void PrintLogicDiskInfo()
 
 void PrintPhysDiskInfo()
 {
-	//»ñÈ¡ÎïÀí´ÅÅÌÐÅÏ¢
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	DiskInfo du;
 	vector<PhysDiskInfo> vecPdi;
 	if (du.GetPhysDiskInfos(vecPdi)) {
@@ -619,7 +614,7 @@ void PrintPhysDiskInfo()
 void PrintPhysDiskState()
 {
 
-	//»ñÈ¡ËùÓÐ´ÅÅÌ×´Ì¬
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ð´ï¿½ï¿½ï¿½×´Ì¬
 	Disk du;
 	vector<PhysDiskState> vecPds;
 
@@ -654,7 +649,7 @@ void PrintPhysDiskState()
 
 void PrintProcessDiskUsage()
 {
-	//»ñÈ¡½ø³ÌÊ¹ÓÃ´ÅÅÌÇé¿ö
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½Ê¹ï¿½Ã´ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	DiskProc dp;
 	cout.setf(ios::left);
 	cout << '\t' << setw(7) << "Pid" << setw(30) << "Name" << setw(10) << "Read(B/s)" << setw(10) << "Write(B/s)" << endl;
@@ -689,7 +684,7 @@ void PrintProcessDiskUsage()
 
 void PrintAdapterInfo()
 {
-	//»ñÈ¡ÊÊÅäÆ÷ÐÅÏ¢
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ï¢
 	vector<AdapterInfo> vecAi;
 	if (AdapterInfo::GetInfos(vecAi)) {
 
@@ -710,7 +705,7 @@ void PrintAdapterIo()
 {
 	cout.setf(ios::left);
 
-	//»ñÈ¡ÊÊÅäÆ÷×´Ì¬
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½×´Ì¬
 	Adapter nu;
 	vector<AdapterIo> vecAs;
 	cout << '\t' << setw(40) << "Name" << setw(10) << "Recv(B/s)" << setw(10) << "Send(B/s)" << endl;
@@ -738,7 +733,7 @@ void PrintProcessTcpConn()
 {
 	cout.setf(ios::left);
 
-	//»ñÈ¡½ø³ÌµÄTcpÁ¬½ÓÇé¿ö
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ìµï¿½Tcpï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
 	
 	vector<TcpConn> vecPtc;
 	if (TcpConn::Get(vecPtc)) {
@@ -759,7 +754,7 @@ void PrintProcessTcpConn()
 void PrintProcessListenProc()
 {	cout.setf(ios::left);
 
-	//»ñÈ¡½ø³ÌµÄÕìÌý¶Ë¿ÚÇé¿ö
+	//ï¿½ï¿½È¡ï¿½ï¿½ï¿½Ìµï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Ë¿ï¿½ï¿½ï¿½ï¿½
 	vector<ListenProc> vecPls;
 	if (ListenProc::Get(vecPls)) {
 	

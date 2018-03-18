@@ -13,13 +13,20 @@ using std::string;
 class SystemInfo
 {
 public:
-	bool GetInfo();
-	
-	string GetName();
-	string GetVersion();
-	string GetArch();
+	string Name();
+	string Desc();
+	string Version();
+	string Arch();
 
+private:
+	static string GetName();
+	static string GetDesc();
+	static string GetVersion();
+	static string GetArch();
+
+private:
 	string m_name;
+	string m_desc;
 	string m_version;
 	string m_arch;
 };

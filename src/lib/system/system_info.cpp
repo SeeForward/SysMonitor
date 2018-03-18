@@ -13,17 +13,58 @@
 #	include <sys/utsname.h>
 #endif //__WINDOWS__
 
-bool SystemInfo::GetInfo()
+string SystemInfo::Name()
 {
-	m_name = GetName();
-	m_version = GetVersion();
-	m_arch = GetArch();
-	return true;
+	if (m_name.empty())
+	{
+		m_name = GetName();
+	}
+
+	return m_name;
+}
+
+string SystemInfo::Desc()
+{
+	if (m_desc.empty())
+	{
+		m_desc = GetDesc();
+	}
+
+	return m_desc;
+}
+
+string SystemInfo::Version()
+{
+	if (m_version.empty())
+	{
+		m_version = GetVersion();
+	}
+
+	return m_version;
+}
+
+string SystemInfo::Arch()
+{
+	if (m_arch.empty())
+	{
+		m_arch = GetArch();
+	}
+
+	return m_arch;
 }
 
 string SystemInfo::GetName()
 {
-	string osName;
+#ifdef __WINDOWS__
+	return "Windows";
+#else
+	return "Linux";
+#endif
+}
+
+string SystemInfo::GetDesc()
+{
+	string osDesc;
 #ifdef __WINDOWS__
 	OSVERSIONINFOEX os;
 	os.dwOSVersionInfoSize=sizeof(os);
@@ -38,16 +79,16 @@ string SystemInfo::GetName()
 			{
 				case 0:
 					if (os.dwPlatformId == VER_PLATFORM_WIN32_NT) {
-						osName = "Microsoft Windows NT 4.0";
+						osDesc = "Microsoft Windows NT 4.0";
 					} else if (os.dwPlatformId == VER_PLATFORM_WIN32_WINDOWS) {
-						osName = "Microsoft Windows 95";
+						osDesc = "Microsoft Windows 95";
 					}
 					break;
 				case 10:
-					osName = "Microsoft Windows 98";
+					osDesc = "Microsoft Windows 98";
 					break;
 				case 90:
-					osName = "Microsoft Windows Me";
+					osDesc = "Microsoft Windows Me";
 					break;
 			}
 			break;
@@ -55,18 +96,18 @@ string SystemInfo::GetName()
 			switch(os.dwMinorVersion)
 			{
 				case 0:
-					osName = "Microsoft Windows 2000";
+					osDesc = "Microsoft Windows 2000";
 					break;
 				case 1:
-					osName = "Microsoft Windows XP";
+					osDesc = "Microsoft Windows XP";
 					break;
 				case 2:
 					if (os.wProductType == VER_NT_WORKSTATION) {
-						osName = "Microsoft Windows XP";  
+						osDesc = "Microsoft Windows XP";  
 					} else if (GetSystemMetrics(SM_SERVERR2) == 0) {
-						osName = "Microsoft Windows Server 2003";
+						osDesc = "Microsoft Windows Server 2003";
 					} else if (GetSystemMetrics(SM_SERVERR2) != 0) {
-						osName = "Microsoft Windows Server 2003 R2";
+						osDesc = "Microsoft Windows Server 2003 R2";
 					}
 					break;
 			}
@@ -76,46 +117,46 @@ string SystemInfo::GetName()
 			{
 				case 0:
 					if (os.wProductType == VER_NT_WORKSTATION) {
-						osName = "Microsoft Windows Vista";
+						osDesc = "Microsoft Windows Vista";
 					} else {
-						osName = "Microsoft Windows Server 2008";
+						osDesc = "Microsoft Windows Server 2008";
 					}
 					break;
 				case 1:
 					if (os.wProductType == VER_NT_WORKSTATION) {
-						osName = "Microsoft Windows 7";
+						osDesc = "Microsoft Windows 7";
 					} else {
-						osName = "Microsoft Windows Server 2008 R2";
+						osDesc = "Microsoft Windows Server 2008 R2";
 					}
 					break;
 				case 2:
 					if (os.wProductType == VER_NT_WORKSTATION) {
-						osName = "Microsoft Windows 8";
+						osDesc = "Microsoft Windows 8";
 					} else {
-						osName = "Microsoft Windows Server 2012";
+						osDesc = "Microsoft Windows Server 2012";
 					}
 					break;
 				case 3:
 					if (os.wProductType == VER_NT_WORKSTATION) {
-						osName = "Microsoft Windows 8.1";
+						osDesc = "Microsoft Windows 8.1";
 					} else {
-						osName = "Microsoft Windows Server 2012 R2";
+						osDesc = "Microsoft Windows Server 2012 R2";
 					}
 					break;
 			}
 			break;
 		case 10:
 			if (os.wProductType == VER_NT_WORKSTATION) {
-				osName = "Microsoft Windows 10";
+				osDesc = "Microsoft Windows 10";
 			} else {
-				osName = "Microsoft Windows Server 2016";
+				osDesc = "Microsoft Windows Server 2016";
 			}
 			break;
 		default:
-			osName = "Unkown";
+			osDesc = "Unkown";
 	}
 
-	if (osName.empty()) {
+	if (osDesc.empty()) {
 		return "Unkown";
 	}
 #else
@@ -123,12 +164,12 @@ string SystemInfo::GetName()
 	if (uname (&name) == -1) {
 		return "Unkown";	
 	}
-	osName = name.sysname;
-	osName += " ";
-	osName += name.release;
+	osDesc = name.sysname;
+	osDesc += " ";
+	osDesc += name.release;
 
 #endif //__WINDOWS__
-	return osName;
+	return osDesc;
 }
 
 string SystemInfo::GetVersion() 
