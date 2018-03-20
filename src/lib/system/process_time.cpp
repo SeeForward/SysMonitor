@@ -32,6 +32,7 @@ bool GetProcessTime(int32_t pid, ProcessTime &pt)
 
 	char buf[512];
 	if (!fgets(buf, sizeof(buf), fp)) {
+		fclose(fp);
 		return false;
 	}
 	fclose(fp);

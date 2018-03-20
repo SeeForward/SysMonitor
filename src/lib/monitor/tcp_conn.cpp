@@ -88,6 +88,7 @@ bool TcpConn::Get(vector<TcpConn> &vecPtc)
 	//skip head line
 	if (!fgets(buf, sizeof(buf), fp)) 
 	{
+		fclose(fp);
 		return false;
 	}
 	//placeholder

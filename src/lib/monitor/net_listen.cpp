@@ -99,6 +99,7 @@ bool ListenProc::Get(vector<ListenProc> &vecPls)
 	//skip head line
 	if (!fgets(buf, sizeof(buf), fp)) 
 	{
+		fclose(fp);
 		return false;
 	}
 	//placeholder

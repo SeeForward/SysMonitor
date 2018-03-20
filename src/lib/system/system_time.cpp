@@ -57,6 +57,7 @@ SystemTime SystemTime::Now()
 
 	char buf[256];
 	if (!fgets(buf, sizeof(buf), fp)) {
+		fclose(fp);
 		return st;
 	}
 	

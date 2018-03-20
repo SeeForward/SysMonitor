@@ -226,10 +226,12 @@ bool Adapter::GetIoCounts(vector<AdapterIo> &vecAs)
 	//skip two lines
 	if (!fgets(buf, sizeof(buf), fp)) 
 	{
+		fclose(fp);
 		return false;
 	}
 	if (!fgets(buf, sizeof(buf), fp)) 
 	{
+		fclose(fp);
 		return false;
 	}
 	char nameBuf[128];

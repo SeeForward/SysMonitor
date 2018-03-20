@@ -142,6 +142,7 @@ bool CpuUsage::Init()
 		}
 		char* pInstances = new char[instanceLen];
 		if (NULL == pInstances) {
+			delete[] pCounters;
 			return false;
 		}
 		::PdhEnumObjectItems(0, 0, proc, pCounters, &counterLen, pInstances, &instanceLen, PERF_DETAIL_WIZARD, 0);
