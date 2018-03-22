@@ -293,7 +293,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 AUTOMAKE_OPTIONS = foreign
-SUBDIRS = src/lib src/lib/system src/lib/monitor src/test/system src/test/monitor src/app
+SUBDIRS = src/lib src/lib/concurrent src/lib/system src/lib/monitor src/test/concurrent src/test/system src/test/monitor src/app
 INCLUDES = -I$(srcdir)/src/include
 all: config.h
 	$(MAKE) $(AM_MAKEFLAGS) all-recursive
