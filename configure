@@ -5210,7 +5210,7 @@ fi
 done
 
 
-ac_config_files="$ac_config_files Makefile src/app/Makefile src/lib/Makefile src/lib/concurrent/Makefile src/lib/monitor/Makefile src/lib/system/Makefile src/test/monitor/Makefile src/test/system/Makefile"
+ac_config_files="$ac_config_files Makefile src/app/Makefile src/lib/Makefile src/lib/concurrent/Makefile src/lib/monitor/Makefile src/lib/system/Makefile src/test/concurrent/Makefile src/test/monitor/Makefile src/test/system/Makefile"
 
 cat >confcache <<\_ACEOF
 # This file is a shell script that caches the results of configure
@@ -5949,6 +5949,7 @@ do
     "src/lib/concurrent/Makefile") CONFIG_FILES="$CONFIG_FILES src/lib/concurrent/Makefile" ;;
     "src/lib/monitor/Makefile") CONFIG_FILES="$CONFIG_FILES src/lib/monitor/Makefile" ;;
     "src/lib/system/Makefile") CONFIG_FILES="$CONFIG_FILES src/lib/system/Makefile" ;;
+    "src/test/concurrent/Makefile") CONFIG_FILES="$CONFIG_FILES src/test/concurrent/Makefile" ;;
     "src/test/monitor/Makefile") CONFIG_FILES="$CONFIG_FILES src/test/monitor/Makefile" ;;
     "src/test/system/Makefile") CONFIG_FILES="$CONFIG_FILES src/test/system/Makefile" ;;
 
