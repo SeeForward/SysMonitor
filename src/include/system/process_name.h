@@ -5,6 +5,8 @@
 #include <map>
 #include <string>
 
+#include "mutex.h"
+
 class ProcessName
 {
 public:
@@ -12,6 +14,8 @@ public:
 	
 	//get the process name by pid
 	std::string GetNameByPid(int32_t pid);
+
+	bool GetPidNameMap(std::map<int32_t, std::string> &mapPidName, bool isFlush = false);
 
 private:
 	//make only get object by Inst()
@@ -21,7 +25,10 @@ private:
 	//get the mapping of pid and process name
 	bool GetMap();
 
+	bool MapEmpty();
+
 private:
+	Mutex m_mutex;
 	std::map<int32_t, std::string> m_mapPidName;
 };
 

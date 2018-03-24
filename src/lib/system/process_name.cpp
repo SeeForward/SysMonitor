@@ -1,5 +1,6 @@
 #include "process_name.h"
 #include "system_tool.h"
+#include "AutoLock.h"
 
 #include <stdio.h>
 
@@ -18,32 +19,63 @@ ProcessName* ProcessName::Inst()
 string ProcessName::GetNameByPid(int32_t pid) 
 {
 	//first call, load the mapping of pid and name
-	if (m_mapPidName.empty())
+	if (MapEmpty())
 	{
 		if (!GetMap()) {
 			return "";
 		}
 	}
 
-	map<int32_t, string>::iterator iter = m_mapPidName.find(pid);
-	//not found
-	if (iter == m_mapPidName.end()) 
 	{
-		//reload
-		if (!GetMap()) {
-			return "";
-		}
-		iter = m_mapPidName.find(pid);
-		//still not found, return ""
-		if (iter == m_mapPidName.end()) {
-			return "";
+		AutoLock al(m_mutex);
+		map<int32_t, string>::iterator iter = m_mapPidName.find(pid);
+		//not found
+		if (iter != m_mapPidName.end()) 
+		{
+			return iter->second;
 		}
 	}
+
+	//reload
+	if (!GetMap()) {
+		return "";
+	}
+	AutoLock al(m_mutex);
+	map<int32_t, string>::iterator iter = m_mapPidName.find(pid);
+	//still not found, return ""
+	if (iter == m_mapPidName.end()) {
+		return "";
+	}
+
 	return iter->second;
+}
+
+bool ProcessName::GetPidNameMap(std::map<int32_t, std::string> &mapPidName, bool isFlush)
+{
+	mapPidName.clear();
+
+	if (MapEmpty() || isFlush)
+	{
+		if (!GetMap())
+		{
+			return false;
+		}
+	}
+
+	AutoLock al(m_mutex);
+	mapPidName = m_mapPidName;
+	return true;
+}
+
+bool ProcessName::MapEmpty()
+{
+	AutoLock al(m_mutex);
+	return m_mapPidName.empty();
 }
 
 bool ProcessName::GetMap() 
 {
+	AutoLock al(m_mutex);
 	m_mapPidName.clear();
 #ifdef __WINDOWS__
 	HANDLE hSnapShot = ::CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
@@ -73,10 +105,13 @@ bool ProcessName::GetMap()
 	{
 		sprintf(buf, "/proc/%d/status", pids[i]);
 		FILE* fp = fopen(buf, "r");
-		if (!fp) {
+		if (!fp) 
+		{
 			continue;
 		}
-		if (!fgets(buf, sizeof(buf), fp)) {
+		if (!fgets(buf, sizeof(buf), fp)) 
+		{
+			fclose(fp);
 			continue;
 		}
 		sscanf(buf, "%*s %s", name);

@@ -102,6 +102,7 @@ am_monitor_OBJECTS = sys_monitor.$(OBJEXT)
 monitor_OBJECTS = $(am_monitor_OBJECTS)
 monitor_DEPENDENCIES = $(top_srcdir)/src/lib/monitor/libmonitor.a \
 	$(top_srcdir)/src/lib/system/libsystem.a \
+	$(top_srcdir)/src/lib/concurrent/libconcurrent.a \
 	$(top_srcdir)/src/lib/libcommon.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -254,7 +255,7 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 monitor_SOURCES = sys_monitor.cpp
-monitor_LDADD = $(top_srcdir)/src/lib/monitor/libmonitor.a $(top_srcdir)/src/lib/system/libsystem.a $(top_srcdir)/src/lib/libcommon.a
+monitor_LDADD = $(top_srcdir)/src/lib/monitor/libmonitor.a $(top_srcdir)/src/lib/system/libsystem.a $(top_srcdir)/src/lib/concurrent/libconcurrent.a $(top_srcdir)/src/lib/libcommon.a -lpthread
 INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/include/system -I$(top_srcdir)/src/include/monitor
 all: all-am
 
