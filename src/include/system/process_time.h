@@ -2,6 +2,7 @@
 #define __PROCESS_TIME_H__
 
 #include "type_def.h"
+#include <string>
 
 class ProcessTime 
 {
@@ -26,6 +27,8 @@ public:
 
 	bool GetTime();
 
+	std::string ToStr();
+
 public:
 	uint64_t m_system;
 	uint64_t m_kernel;
@@ -34,9 +37,6 @@ public:
 private:
 	int32_t  m_pid;
 };
-
-//get the ProcessTime of process which was specified
-bool GetProcessTime(int32_t pid, ProcessTime& pt);
 
 //calculate cpu usage rate of Process in a period of time
 float CalcProcessUsage(const ProcessTime &begin, const ProcessTime &end);

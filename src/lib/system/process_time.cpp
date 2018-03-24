@@ -54,6 +54,13 @@ bool ProcessTime::GetTime()
 	return true;
 }
 
+std::string ProcessTime::ToStr()
+{
+	std::stringstream ss;
+	ss << "[pid:" << m_pid << ", system:" << m_system << ", kernel:" << m_kernel << ", user:" << m_user << "]";
+	return ss.str(); 
+}
+
 float CalcProcessUsage(const ProcessTime &begin, const ProcessTime &end) 
 {
 	if (begin.Pid() != end.Pid())
