@@ -17,8 +17,9 @@ float CpuProc::GetUsage(int32_t pid)
 {
 	float usage = 0.0;
 
-	ProcessTime ptCur;
-	if(!GetProcessTime(pid, ptCur)) {
+	ProcessTime ptCur(pid);
+	if (!ptCur.GetTime()) 
+	{
 		return usage;
 	}
 
