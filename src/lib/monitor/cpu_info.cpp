@@ -15,12 +15,12 @@
 #	include <dirent.h>
 #endif //__WINDOWS__
 
-ProcessorInfo::ProcessorInfo() 
+CpuInfo::CpuInfo() 
 {
 	Clear();
 }
 
-void ProcessorInfo::Clear() 
+void CpuInfo::Clear() 
 {
 	m_isGet = false;
 	m_physCount = 0;
@@ -32,7 +32,7 @@ void ProcessorInfo::Clear()
 	m_model.clear();
 }
 
-bool ProcessorInfo::Get() 
+bool CpuInfo::Get() 
 {
 	Clear();
 	m_isGet = true;
@@ -249,7 +249,7 @@ bool ProcessorInfo::Get()
 }
 
 
-std::string ProcessorInfo::ToStr()
+std::string CpuInfo::ToStr()
 {
 	if (!m_isGet && !Get())
 	{

@@ -400,18 +400,22 @@ void TestAdapter()
 	}
 }
 
-void PrintProcessorInfo() {
-	ProcessorInfo pi;
-	if (pi.Get()) {
-		cout << "\tCPU Count\t\t: " << pi.m_physCount << endl;
-		cout << "\tPhysical Cores\t\t: " << pi.m_coreCount << endl;
-		cout << "\tLogical Processors\t: " << pi.m_logiProcCount << endl;
-		cout << "\tModel Name\t\t: " << pi.m_model << endl;
-		cout << "\tCPU MHz\t\t\t: " << pi.m_rate << endl;
-		cout << "\tL1 Cache Size\t\t: " << pi.m_cache1Size << " KB" << endl;
-		cout << "\tL2 Cache Size\t\t: " << pi.m_cache2Size << " KB" << endl;
-		cout << "\tL3 Cache Size\t\t: " << pi.m_cache3Size << " KB" << endl;
-	} else {
+void PrintProcessorInfo() 
+{
+	CpuInfo ci;
+	if (ci.Get()) 
+	{
+		cout << "\tCPU Count\t\t: " << ci.m_physCount << endl;
+		cout << "\tPhysical Cores\t\t: " << ci.m_coreCount << endl;
+		cout << "\tLogical Processors\t: " << ci.m_logiProcCount << endl;
+		cout << "\tModel Name\t\t: " << ci.m_model << endl;
+		cout << "\tCPU MHz\t\t\t: " << ci.m_rate << endl;
+		cout << "\tL1 Cache Size\t\t: " << ci.m_cache1Size << " KB" << endl;
+		cout << "\tL2 Cache Size\t\t: " << ci.m_cache2Size << " KB" << endl;
+		cout << "\tL3 Cache Size\t\t: " << cis.m_cache3Size << " KB" << endl;
+	}
+	else 
+	{
 		cout << "Call Processor::GetProcessorInfo Fail" << endl;
 	}
 }

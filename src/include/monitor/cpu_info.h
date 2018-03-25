@@ -5,10 +5,10 @@
 #include <string>
 
 //Processor information
-class ProcessorInfo 
+class CpuInfo 
 {
 public:
-	ProcessorInfo();
+	CpuInfo();
 
 	//get processor's information
 	bool Get();
