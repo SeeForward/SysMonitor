@@ -1,5 +1,8 @@
 #include "cpu_info.h"
 
+#include <iostream>
+#include <sstream>
+
 #ifdef __WINDOWS__
 #	include <Windows.h>
 #	include <Pdh.h>
@@ -14,27 +17,25 @@
 
 ProcessorInfo::ProcessorInfo() 
 {
-	m_physCount = 0;
-	m_coreCount = 0;
-	m_logiProcCount = 0;
-	m_cache1Size = 0;
-	m_cache2Size = 0;
-	m_cache3Size = 0;
+	Clear();
 }
 
 void ProcessorInfo::Clear() 
 {
+	m_isGet = false;
 	m_physCount = 0;
 	m_coreCount = 0;
 	m_logiProcCount = 0;
 	m_cache1Size = 0;
 	m_cache2Size = 0;
 	m_cache3Size = 0;
+	m_model.clear();
 }
 
 bool ProcessorInfo::Get() 
 {
 	Clear();
+	m_isGet = true;
 #ifdef __WINDOWS__
 	m_physCount = 0;
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION pslpi = NULL;  
@@ -247,3 +248,23 @@ bool ProcessorInfo::Get()
 	return true;
 }
 
+
+std::string ProcessorInfo::ToStr()
+{
+	if (!m_isGet && !Get())
+	{
+		return "";
+	}
+
+	std::stringstream ss;
+	ss << "\tCPU Count\t\t: " << m_physCount << std::endl;
+	ss << "\tPhysical Cores\t\t: " << m_coreCount << std::endl;
+	ss << "\tLogical Processors\t: " << m_logiProcCount << std::endl;
+	ss << "\tModel Name\t\t: " << m_model << std::endl;
+	ss << "\tCPU MHz\t\t\t: " << m_rate << std::endl;
+	ss << "\tL1 Cache Size\t\t: " << m_cache1Size << " KB" << std::endl;
+	ss << "\tL2 Cache Size\t\t: " << m_cache2Size << " KB" << std::endl;
+	ss << "\tL3 Cache Size\t\t: " << m_cache3Size << " KB" << std::endl;
+
+	return ss.str();
+}

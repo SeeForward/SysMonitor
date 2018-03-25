@@ -13,10 +13,13 @@ public:
 	//get processor's information
 	bool Get();
 
+	std::string ToStr();
+
 private:
 	void Clear(); 
 
 public:
+	bool        m_isGet;
 	int32_t     m_physCount; 		//count of cpu
 	int32_t     m_coreCount;		//count of physical processor
 	int32_t     m_logiProcCount;		//count of logical processor(hyper-threading)
