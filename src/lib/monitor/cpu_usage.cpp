@@ -25,10 +25,6 @@ using std::vector;
 
 CpuUsage::CpuUsage() 
 {
-#ifdef __WINDOWS__
-	m_hQuery = NULL;
-	EnablePrivileges();
-#endif //__WINDOWS__
 	Init();
 }
 
@@ -37,11 +33,12 @@ CpuUsage::~CpuUsage()
 	Destory();
 }
 
-float CpuUsage::GetUsage() 
+float CpuUsage::GetTotal() 
 {
 	SystemTime curSt = SystemTime::Now();
 	
-	if (m_lastSystemTime.m_system == 0) {
+	if (0 == m_lastSystemTime.m_system)
+	{
 		m_lastSystemTime = curSt;	
 		return 0.0;
 	}
@@ -49,13 +46,14 @@ float CpuUsage::GetUsage()
 	float usage = CalcProcessorUsage(m_lastSystemTime, curSt);
 	m_lastSystemTime = curSt;
 
-	if (usage > 100.0) {
+	if (usage > 100.0)
+	{
 		return 100.0;
 	}
 	return usage;
 }
 
-bool CpuUsage::GetUsages(vector<float> &vecUsage) 
+bool CpuUsage::GetEvery(vector<float> &vecUsage) 
 {
 	vecUsage.clear();
 #ifdef __WINDOWS__
@@ -129,54 +127,54 @@ bool CpuUsage::GetUsages(vector<float> &vecUsage)
 bool CpuUsage::Init() 
 {
 #ifdef __WINDOWS__
-	if (NULL == m_hQuery && m_vecHcounter.empty()) 
+	m_hQuery = NULL;
+	EnablePrivileges();
+
+	vector<string> vecQueryStr;
+	const char * proc = "CpuUsage";
+	DWORD counterLen = 0;
+	DWORD instanceLen = 0;
+	::PdhEnumObjectItems(0, 0, proc, 0, &counterLen, 0, &instanceLen, PERF_DETAIL_WIZARD, 0);
+	char* pCounters = new char[counterLen];
+	if (NULL == pCounters) {
+		return false;
+	}
+	char* pInstances = new char[instanceLen];
+	if (NULL == pInstances) {
+		delete[] pCounters;
+		return false;
+	}
+	::PdhEnumObjectItems(0, 0, proc, pCounters, &counterLen, pInstances, &instanceLen, PERF_DETAIL_WIZARD, 0);
+
+	for (char* pTmp = pInstances; *pTmp != 0; pTmp += strlen(pTmp) + 1) 
 	{
-		vector<string> vecQueryStr;
-		const char * proc = "CpuUsage";
-		DWORD counterLen = 0;
-		DWORD instanceLen = 0;
-		::PdhEnumObjectItems(0, 0, proc, 0, &counterLen, 0, &instanceLen, PERF_DETAIL_WIZARD, 0);
-		char* pCounters = new char[counterLen];
-		if (NULL == pCounters) {
-			return false;
-		}
-		char* pInstances = new char[instanceLen];
-		if (NULL == pInstances) {
-			delete[] pCounters;
-			return false;
-		}
-		::PdhEnumObjectItems(0, 0, proc, pCounters, &counterLen, pInstances, &instanceLen, PERF_DETAIL_WIZARD, 0);
+		string queryStr = "\\" + string(proc) + "(" + string(pTmp) + ")\\" + string("% CpuUsage Time");
+		vecQueryStr.push_back(queryStr);
+	}
+	if (pCounters) {
+		delete[] pCounters;
+		pCounters = NULL;
+	}
+	if (pInstances) {
+		delete[] pInstances;
+		pInstances = NULL;
+	}
 
-		for (char* pTmp = pInstances; *pTmp != 0; pTmp += strlen(pTmp) + 1) 
-		{
-			string queryStr = "\\" + string(proc) + "(" + string(pTmp) + ")\\" + string("% CpuUsage Time");
-			vecQueryStr.push_back(queryStr);
-		}
-		if (pCounters) {
-			delete[] pCounters;
-			pCounters = NULL;
-		}
-		if (pInstances) {
-			delete[] pInstances;
-			pInstances = NULL;
-		}
+	PDH_STATUS pdhStatus = ::PdhOpenQuery(0, 0, &m_hQuery);
+	if (pdhStatus != ERROR_SUCCESS) {
+		::PdhCloseQuery(m_hQuery);
+		return false;
+	}
 
-	    PDH_STATUS pdhStatus = ::PdhOpenQuery(0, 0, &m_hQuery);
+	HCOUNTER hCounterTmp;
+	for(size_t i = 0; i < vecQueryStr.size(); ++i) 
+	{
+		pdhStatus = ::PdhAddCounter(m_hQuery , vecQueryStr[i].c_str(), 0 , &hCounterTmp) ;
 		if (pdhStatus != ERROR_SUCCESS) {
 			::PdhCloseQuery(m_hQuery);
 			return false;
 		}
-
-		HCOUNTER hCounterTmp;
-		for(size_t i = 0; i < vecQueryStr.size(); ++i) 
-		{
-			pdhStatus = ::PdhAddCounter(m_hQuery , vecQueryStr[i].c_str(), 0 , &hCounterTmp) ;
-			if (pdhStatus != ERROR_SUCCESS) {
-				::PdhCloseQuery(m_hQuery);
-				return false;
-			}
-			m_vecHcounter.push_back(hCounterTmp);
-		}
+		m_vecHcounter.push_back(hCounterTmp);
 	}
 #endif //__WINDOWS__ 
 	return true;

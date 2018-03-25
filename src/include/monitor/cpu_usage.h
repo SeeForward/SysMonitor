@@ -23,10 +23,10 @@ public:
 	~CpuUsage();
 
 	//get the usage rate of total processor (%)
-	float GetUsage();
+	float GetTotal();
 
-	//get the usage rate of all logical processores; total was put at the first
-	bool GetUsages(std::vector<float> &vecUsage);
+	//get the usage rate of every logical processores; total was put at the first
+	bool GetEvery(std::vector<float> &vecUsage);
 
 private:
 	bool Init();

@@ -412,7 +412,7 @@ void PrintProcessorInfo()
 		cout << "\tCPU MHz\t\t\t: " << ci.m_rate << endl;
 		cout << "\tL1 Cache Size\t\t: " << ci.m_cache1Size << " KB" << endl;
 		cout << "\tL2 Cache Size\t\t: " << ci.m_cache2Size << " KB" << endl;
-		cout << "\tL3 Cache Size\t\t: " << cis.m_cache3Size << " KB" << endl;
+		cout << "\tL3 Cache Size\t\t: " << ci.m_cache3Size << " KB" << endl;
 	}
 	else 
 	{
@@ -441,9 +441,9 @@ void PrintProcessorUsage()
 	Signal();
 	while (1)
 	{
-		cout << '\t' << setw(8) << setprecision(2) << cu.GetUsage();	
+		cout << '\t' << setw(8) << setprecision(2) << cu.GetTotal();	
 		
-		if (cu.GetUsages(vecUsage)) {
+		if (cu.GetEvery(vecUsage)) {
 
 			for(size_t i = 0; i < vecUsage.size(); ++i) {
 				cout  << setw(8) << setprecision(2) << vecUsage[i];
