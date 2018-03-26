@@ -28,6 +28,8 @@ public:
 	//get the usage rate of every logical processores; total was put at the first
 	bool GetEvery(std::vector<float> &vecUsage);
 
+	static float Calc(const SystemTime &begin, const SystemTime &end);
+
 private:
 	bool Init();
 	void Destory();

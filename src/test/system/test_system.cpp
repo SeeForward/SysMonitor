@@ -74,9 +74,6 @@ void test_system_time()
     int64_t eT = EscapeTime(stBegin, stEnd);
 
     cout << "escape time: " << eT << endl; 
-
-    float cpuUsage = CalcProcessorUsage(stBegin, stEnd); 
-    cout << "cpu usage: " << cpuUsage << "%" << endl;
 }
 
 void test_system_info()
