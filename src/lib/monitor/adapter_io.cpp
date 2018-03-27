@@ -57,7 +57,7 @@ bool Adapter::GetIo(vector<AdapterIo> &vecAs)
 	int64_t ms = 0;
 	if (m_lastIoTime.m_system != 0) 
 	{
-		ms = EscapeTime(m_lastIoTime, stCur);
+		ms = SystemTime::Escape(m_lastIoTime, stCur);
 	}
 	m_lastIoTime = stCur;
 

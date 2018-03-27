@@ -28,7 +28,7 @@ bool DiskProc::GetUsages(vector<DiskProcUsage> &vecPdu)
 
 	int64_t ms = 0;
 	if (m_lastProcIoTime.m_system != 0) {
-		ms = EscapeTime(m_lastProcIoTime, stCur);
+		ms = SystemTime::Escape(m_lastProcIoTime, stCur);
 	}
 	m_lastProcIoTime = stCur;
 

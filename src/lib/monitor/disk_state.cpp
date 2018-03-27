@@ -119,7 +119,7 @@ bool Disk::GetStates(vector<PhysDiskState> &vecPds)
 
 	int64_t ms = 0;
 	if (m_lastDiskIoTime.m_system != 0) {
-		ms = EscapeTime(m_lastDiskIoTime, stCur);
+		ms = SystemTime::Escape(m_lastDiskIoTime, stCur);
 	}
 	m_lastDiskIoTime = stCur;
 	

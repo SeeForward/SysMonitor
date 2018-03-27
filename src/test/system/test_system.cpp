@@ -71,7 +71,7 @@ void test_system_time()
     SystemTime stEnd = SystemTime::Now();
     cout << stEnd.ToStr() << endl;
 
-    int64_t eT = EscapeTime(stBegin, stEnd);
+    int64_t eT = SystemTime::Escape(stBegin, stEnd);
 
     cout << "escape time: " << eT << endl; 
 }
@@ -96,7 +96,7 @@ void test_process_time()
     for (size_t i = 0; i < pids.size(); ++i)
     {
         ProcessTime pt(pids[i]);
-        pt.GetTime();
+        pt.Get();
         cout << pt.ToStr() << endl;
     }
 }

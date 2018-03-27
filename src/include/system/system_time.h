@@ -20,10 +20,14 @@ public:
 		m_user = 0;
 	}
 
-	std::string ToStr();
+	std::string ToStr() const;
 
 	//get current cpu time
 	static SystemTime Now();
+
+	//calculate system escape time (millisecond)
+	static int64_t Escape(const SystemTime& stBegin, const SystemTime& stEnd);
+
 public:
 	uint64_t m_system;
 
@@ -31,8 +35,5 @@ public:
 	uint64_t m_kernel;
 	uint64_t m_user;
 };
-
-//calculate system escape time (millisecond)
-int64_t EscapeTime(const SystemTime& stBegin, const SystemTime& stEnd);
 
 #endif //__SYSTEM_TIME_H__

@@ -14,7 +14,7 @@
 #	include <sys/param.h>
 #endif //__WINDOWS__
 
-std::string SystemTime::ToStr()
+std::string SystemTime::ToStr() const
 {
 	std::stringstream ss;
 	ss << "[system:" << m_system << ", idle:" << m_idle 
@@ -73,7 +73,7 @@ SystemTime SystemTime::Now()
 	return st;
 }
 
-int64_t EscapeTime(const SystemTime& stBegin, const SystemTime& stEnd)
+int64_t SystemTime::Escape(const SystemTime& stBegin, const SystemTime& stEnd)
 {
 	size_t cpuNum = GetCpuNumber();
 #ifdef __WINDOWS__
