@@ -37,14 +37,12 @@ private:
 private:
 	SystemTime m_lastSystemTime;
 
-#ifdef __LINUX__
-	//record system time of all processores last call
-	std::vector<SystemTime> m_vecLastTime;
-#endif //__LINUX__
-
 #ifdef __WINDOWS__
 	std::vector<HCOUNTER> m_vecHcounter;
 	HQUERY m_hQuery;
+#else
+	//record system time of all processores last call
+	std::vector<SystemTime> m_vecLastTime;
 #endif //__WINDOWS__
 };
 
