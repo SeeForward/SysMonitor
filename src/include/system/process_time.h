@@ -25,9 +25,9 @@ public:
 		return m_pid;
 	}
 
-	bool GetTime();
+	bool Get();
 
-	std::string ToStr();
+	std::string ToStr() const;
 
 public:
 	uint64_t m_system;
@@ -37,10 +37,6 @@ public:
 private:
 	int32_t  m_pid;
 };
-
-//calculate cpu usage rate of Process in a period of time
-float CalcProcessUsage(const ProcessTime &begin, const ProcessTime &end);
-
 
 #endif //__PROCESS_TIME_H__
 

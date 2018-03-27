@@ -16,6 +16,8 @@ public:
 		m_usage = 0;
 	}
 
+	std::string ToStr() const;
+
 public:
 	int32_t     m_pid;
 	float       m_usage;     //(%)
@@ -26,13 +28,15 @@ class CpuProc
 {
 public:
 	CpuProc();
-	//~CpuProc();
 
 	//get cpu usage rate of process which was specified (%)
 	float GetUsage(int32_t pid);
 
 	//get cpu usage rate of all processes
 	bool GetUsages(std::vector<CpuProcUsage> &vecPcu);
+
+	//calculate cpu usage rate of Process in a period of time
+	static float CalcUsage(const ProcessTime &begin, const ProcessTime &end);
 
 private:
 	//clear the ProcessTime of not live process in tne map

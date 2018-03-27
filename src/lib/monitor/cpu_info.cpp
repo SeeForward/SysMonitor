@@ -22,7 +22,6 @@ CpuInfo::CpuInfo()
 
 void CpuInfo::Clear() 
 {
-	m_isGet = false;
 	m_physCount = 0;
 	m_coreCount = 0;
 	m_logiProcCount = 0;
@@ -35,7 +34,6 @@ void CpuInfo::Clear()
 bool CpuInfo::Get() 
 {
 	Clear();
-	m_isGet = true;
 #ifdef __WINDOWS__
 	m_physCount = 0;
 	PSYSTEM_LOGICAL_PROCESSOR_INFORMATION pslpi = NULL;  
@@ -249,13 +247,8 @@ bool CpuInfo::Get()
 }
 
 
-std::string CpuInfo::ToStr()
+std::string CpuInfo::ToStr() const
 {
-	if (!m_isGet && !Get())
-	{
-		return "";
-	}
-
 	std::stringstream ss;
 	ss << "\tCPU Count\t\t: " << m_physCount << std::endl;
 	ss << "\tPhysical Cores\t\t: " << m_coreCount << std::endl;

@@ -2,7 +2,7 @@
 #include "system_time.h"
 #include <stdio.h>
 
-bool ProcessTime::GetTime()
+bool ProcessTime::Get()
 {
 	if (m_pid <= 0) 
 	{
@@ -54,32 +54,10 @@ bool ProcessTime::GetTime()
 	return true;
 }
 
-std::string ProcessTime::ToStr()
+std::string ProcessTime::ToStr() const
 {
 	std::stringstream ss;
 	ss << "[pid:" << m_pid << ", system:" << m_system << ", kernel:" << m_kernel << ", user:" << m_user << "]";
 	return ss.str(); 
-}
-
-float CalcProcessUsage(const ProcessTime &begin, const ProcessTime &end) 
-{
-	if (begin.Pid() != end.Pid())
-	{
-		return 0.0;	
-	}
-	 
-	uint64_t elapseSys = end.m_system - begin.m_system;
-	if (elapseSys <= 0)
-	{
-		return 0.0;
-	}
-
-	uint64_t elapseProc = end.m_kernel + end.m_user - begin.m_kernel - begin.m_user;
-	if (elapseProc <= 0)
-	{
-		return 0.0;
-	}
-
-	return (float)(100 * elapseProc / (double) elapseSys);
 }
 
