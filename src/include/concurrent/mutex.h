@@ -8,9 +8,9 @@
 #endif 
 
 #include "uncopyable.h"
-#include "lock.h"
+#include "ILock.h"
 
-class Mutex : public UnCopyable, public CLock
+class Mutex : public UnCopyable, public ILock
 {
 public:
 	Mutex();

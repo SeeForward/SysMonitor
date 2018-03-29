@@ -2,13 +2,13 @@
 #ifndef __AUTO_LOCK_H__
 #define __AUTO_LOCK_H__
 
-#include "lock.h"
+#include "ILock.h"
 #include "uncopyable.h"
 
 class AutoLock: public UnCopyable
 {
 public:
-    AutoLock(CLock &lock): m_lock(lock)
+    AutoLock(ILock &lock): m_lock(lock)
     {
         m_lock.Lock();
     }
@@ -19,7 +19,7 @@ public:
     }
 
 private:
-    CLock &m_lock;
+    ILock &m_lock;
 };
 
 #endif //__AUTO_LOCK_H__

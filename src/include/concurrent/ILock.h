@@ -1,12 +1,12 @@
 #ifndef _LOCK_H_
 #define _LOCK_H_
 
-class CLock
+class ILock
 {
 public:
-	CLock() {}
+	ILock() {}
 
-	virtual ~CLock() {}
+	virtual ~ILock() {}
 
 	virtual void Lock() = 0;
 
