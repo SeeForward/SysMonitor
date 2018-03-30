@@ -9,7 +9,6 @@ RefObj::RefObj()
 
 RefObj::RefObj(const RefObj &other)
 {
-    DecRef();
     m_pCnt = other.m_pCnt;
     IncRef();
 }
@@ -32,20 +31,29 @@ const RefObj& RefObj::operator=(const RefObj &other)
 
 int RefObj::Value() const
 {
-    return *m_pCnt;
+    if (m_pCnt)
+    {
+        return m_pCnt->load();
+    }
+    return 0;
 }
 
 void RefObj::IncRef() const
 {
     if (m_pCnt)
     {
-        ++(*m_pCnt);
+        m_pCnt->fetch_add(1);
     }
 }
 
 void RefObj::DecRef() const
 {
-    if (m_pCnt && (0 == --(*m_pCnt)))
+    if (NULL == m_pCnt)
+    {
+        return ;
+    }
+
+    if (0 == (m_pCnt->fetch_sub(1)))
     {
         delete m_pCnt;
         m_pCnt = NULL;

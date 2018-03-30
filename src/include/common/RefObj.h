@@ -14,7 +14,7 @@ public:
 
     const RefObj& operator=(const RefObj &other);
 
-    inline int Value() const ;
+    int Value() const ;
 
 protected:
 
