@@ -3,6 +3,7 @@ SUBDIRS=    src/lib/common \
             src/lib/concurrent \
             src/lib/system \
             src/lib/monitor \
+            src/test/common \
             src/test/concurrent \
             src/test/system \
             src/test/monitor \

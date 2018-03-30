@@ -89,7 +89,7 @@ POST_UNINSTALL = :
 noinst_PROGRAMS = test_concurrent$(EXEEXT)
 subdir = src/test/concurrent
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.ac
+am__aclocal_m4_deps = $(top_srcdir)/configure.in
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -254,7 +254,10 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 test_concurrent_SOURCES = TestConcurrent.cpp
 test_concurrent_LDADD = $(top_srcdir)/src/lib/concurrent/libconcurrent.a 
-INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/include/system
+INCLUDES = -I$(top_srcdir)/src/include \
+            -I$(top_srcdir)/src/include/system \
+            -I$(top_srcdir)/src/include/concurrent
+
 all: all-am
 
 .SUFFIXES:

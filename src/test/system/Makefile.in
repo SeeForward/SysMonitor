@@ -86,7 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = src/lib/common
+noinst_PROGRAMS = test_system$(EXEEXT)
+subdir = src/test/system
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -96,17 +97,13 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-AR = ar
-ARFLAGS = cru
-AM_V_AR = $(am__v_AR_@AM_V@)
-am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
-am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
-libcommon_a_AR = $(AR) $(ARFLAGS)
-libcommon_a_LIBADD =
-am_libcommon_a_OBJECTS = string_util.$(OBJEXT) RefObj.$(OBJEXT)
-libcommon_a_OBJECTS = $(am_libcommon_a_OBJECTS)
+PROGRAMS = $(noinst_PROGRAMS)
+am_test_system_OBJECTS = test_system.$(OBJEXT)
+test_system_OBJECTS = $(am_test_system_OBJECTS)
+test_system_DEPENDENCIES = $(top_srcdir)/src/lib/monitor/libmonitor.a \
+	$(top_srcdir)/src/lib/system/libsystem.a \
+	$(top_srcdir)/src/lib/concurrent/libconcurrent.a \
+	$(top_srcdir)/src/lib/libcommon.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -136,8 +133,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(libcommon_a_SOURCES)
-DIST_SOURCES = $(libcommon_a_SOURCES)
+SOURCES = $(test_system_SOURCES)
+DIST_SOURCES = $(test_system_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -257,9 +254,17 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LIBRARIES = libcommon.a
-libcommon_a_SOURCES = string_util.cpp RefObj.cpp
-INCLUDES = -I$(top_srcdir)/src/include/common
+test_system_SOURCES = test_system.cpp
+test_system_LDADD = $(top_srcdir)/src/lib/monitor/libmonitor.a \
+                    $(top_srcdir)/src/lib/system/libsystem.a  \
+                    $(top_srcdir)/src/lib/concurrent/libconcurrent.a  \
+                    $(top_srcdir)/src/lib/libcommon.a -lpthread
+
+INCLUDES = -I$(top_srcdir)/src/include/common \
+            -I$(top_srcdir)/src/include/system \
+            -I$(top_srcdir)/src/include/monitor \
+            -I$(top_srcdir)/src/include/concurrent
+
 all: all-am
 
 .SUFFIXES:
@@ -273,9 +278,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/lib/common/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/test/system/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/lib/common/Makefile
+	  $(AUTOMAKE) --foreign src/test/system/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -294,13 +299,12 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
 
-libcommon.a: $(libcommon_a_OBJECTS) $(libcommon_a_DEPENDENCIES) $(EXTRA_libcommon_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libcommon.a
-	$(AM_V_AR)$(libcommon_a_AR) libcommon.a $(libcommon_a_OBJECTS) $(libcommon_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libcommon.a
+test_system$(EXEEXT): $(test_system_OBJECTS) $(test_system_DEPENDENCIES) $(EXTRA_test_system_DEPENDENCIES) 
+	@rm -f test_system$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(test_system_OBJECTS) $(test_system_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -308,8 +312,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/RefObj.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/string_util.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_system.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -409,7 +412,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES)
+all-am: Makefile $(PROGRAMS)
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -443,7 +446,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
+clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -513,7 +516,7 @@ uninstall-am:
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
-	clean-noinstLIBRARIES cscopelist-am ctags ctags-am distclean \
+	clean-noinstPROGRAMS cscopelist-am ctags ctags-am distclean \
 	distclean-compile distclean-generic distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-dvi install-dvi-am \
@@ -527,6 +530,7 @@ uninstall-am:
 
 .PRECIOUS: Makefile
 
+#export INCLUDES
 
 # Tell versions [3.59,3.63) of GNU make to not export all variables.
 # Otherwise a system limit (for SysV at least) may be exceeded.

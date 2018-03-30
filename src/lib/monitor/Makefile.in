@@ -276,9 +276,17 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 noinst_LIBRARIES = libmonitor.a
-libmonitor_a_SOURCES = disk_info.cpp disk_io.cpp disk_state.cpp disk_proc.cpp memory_info.cpp memory_usage.cpp memory_proc.cpp net_info.cpp tcp_inode.cpp tcp_conn.cpp net_listen.cpp adapter_io.cpp cpu_info.cpp cpu_usage.cpp cpu_proc.cpp
+libmonitor_a_SOURCES = disk_info.cpp disk_io.cpp disk_state.cpp disk_proc.cpp \
+                        memory_info.cpp memory_usage.cpp memory_proc.cpp \
+                        net_info.cpp tcp_inode.cpp tcp_conn.cpp net_listen.cpp adapter_io.cpp \
+                        cpu_info.cpp cpu_usage.cpp cpu_proc.cpp
+
 libmonitor_a_CXXFLAGS = -D__LINUX__ -D__STDC_FORMAT_MACROS 
-INCLUDES = -I$(top_srcdir)/src/include -I$(top_srcdir)/src/include/system -I$(top_srcdir)/src/include/monitor -I$(top_srcdir)/src/include/concurrent
+INCLUDES = -I$(top_srcdir)/src/include/common \
+            -I$(top_srcdir)/src/include/system \
+            -I$(top_srcdir)/src/include/monitor \
+            -I$(top_srcdir)/src/include/concurrent
+
 all: all-am
 
 .SUFFIXES:
@@ -292,9 +300,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/lib/monitor/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/lib/monitor/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/lib/monitor/Makefile
+	  $(AUTOMAKE) --foreign src/lib/monitor/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
