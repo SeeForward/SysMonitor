@@ -3,7 +3,7 @@ monitor_SOURCES=sys_monitor.cpp
 monitor_LDADD=  $(top_srcdir)/src/lib/monitor/libmonitor.a \
                 $(top_srcdir)/src/lib/system/libsystem.a \
                 $(top_srcdir)/src/lib/concurrent/libconcurrent.a \
-                $(top_srcdir)/src/lib/libcommon.a \
+                $(top_srcdir)/src/lib/common/libcommon.a \
                 -lpthread
 monitor_CXXFLAGS=-D__LINUX__ 
 INCLUDES=   -I$(top_srcdir)/src/include/common \

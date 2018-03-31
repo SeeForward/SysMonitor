@@ -103,7 +103,7 @@ test_system_OBJECTS = $(am_test_system_OBJECTS)
 test_system_DEPENDENCIES = $(top_srcdir)/src/lib/monitor/libmonitor.a \
 	$(top_srcdir)/src/lib/system/libsystem.a \
 	$(top_srcdir)/src/lib/concurrent/libconcurrent.a \
-	$(top_srcdir)/src/lib/libcommon.a
+	$(top_srcdir)/src/lib/common/libcommon.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -258,7 +258,7 @@ test_system_SOURCES = test_system.cpp
 test_system_LDADD = $(top_srcdir)/src/lib/monitor/libmonitor.a \
                     $(top_srcdir)/src/lib/system/libsystem.a  \
                     $(top_srcdir)/src/lib/concurrent/libconcurrent.a  \
-                    $(top_srcdir)/src/lib/libcommon.a -lpthread
+                    $(top_srcdir)/src/lib/common/libcommon.a -lpthread
 
 INCLUDES = -I$(top_srcdir)/src/include/common \
             -I$(top_srcdir)/src/include/system \

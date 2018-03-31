@@ -103,7 +103,7 @@ monitor_OBJECTS = $(am_monitor_OBJECTS)
 monitor_DEPENDENCIES = $(top_srcdir)/src/lib/monitor/libmonitor.a \
 	$(top_srcdir)/src/lib/system/libsystem.a \
 	$(top_srcdir)/src/lib/concurrent/libconcurrent.a \
-	$(top_srcdir)/src/lib/libcommon.a
+	$(top_srcdir)/src/lib/common/libcommon.a
 monitor_LINK = $(CXXLD) $(monitor_CXXFLAGS) $(CXXFLAGS) $(AM_LDFLAGS) \
 	$(LDFLAGS) -o $@
 AM_V_P = $(am__v_P_@AM_V@)
@@ -264,7 +264,7 @@ monitor_SOURCES = sys_monitor.cpp
 monitor_LDADD = $(top_srcdir)/src/lib/monitor/libmonitor.a \
                 $(top_srcdir)/src/lib/system/libsystem.a \
                 $(top_srcdir)/src/lib/concurrent/libconcurrent.a \
-                $(top_srcdir)/src/lib/libcommon.a \
+                $(top_srcdir)/src/lib/common/libcommon.a \
                 -lpthread
 
 monitor_CXXFLAGS = -D__LINUX__ 
