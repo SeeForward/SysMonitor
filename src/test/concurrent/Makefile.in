@@ -86,10 +86,10 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-noinst_PROGRAMS = test_concurrent$(EXEEXT)
+noinst_PROGRAMS = test_concurrent$(EXEEXT) test_thread$(EXEEXT)
 subdir = src/test/concurrent
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
-am__aclocal_m4_deps = $(top_srcdir)/configure.in
+am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
 	$(ACLOCAL_M4)
 DIST_COMMON = $(srcdir)/Makefile.am $(am__DIST_COMMON)
@@ -101,6 +101,11 @@ PROGRAMS = $(noinst_PROGRAMS)
 am_test_concurrent_OBJECTS = TestConcurrent.$(OBJEXT)
 test_concurrent_OBJECTS = $(am_test_concurrent_OBJECTS)
 test_concurrent_DEPENDENCIES =  \
+	$(top_srcdir)/src/lib/concurrent/libconcurrent.a
+am_test_thread_OBJECTS = TestThread.$(OBJEXT)
+test_thread_OBJECTS = $(am_test_thread_OBJECTS)
+test_thread_DEPENDENCIES = $(top_srcdir)/src/lib/system/libsystem.a \
+	$(top_srcdir)/src/lib/common/libcommon.a \
 	$(top_srcdir)/src/lib/concurrent/libconcurrent.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
@@ -131,8 +136,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(test_concurrent_SOURCES)
-DIST_SOURCES = $(test_concurrent_SOURCES)
+SOURCES = $(test_concurrent_SOURCES) $(test_thread_SOURCES)
+DIST_SOURCES = $(test_concurrent_SOURCES) $(test_thread_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -254,7 +259,14 @@ top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 test_concurrent_SOURCES = TestConcurrent.cpp
 test_concurrent_LDADD = $(top_srcdir)/src/lib/concurrent/libconcurrent.a 
+test_thread_SOURCES = TestThread.cpp
+test_thread_LDADD = $(top_srcdir)/src/lib/system/libsystem.a \
+                    $(top_srcdir)/src/lib/common/libcommon.a \
+                    $(top_srcdir)/src/lib/concurrent/libconcurrent.a \
+                    -lpthread
+
 INCLUDES = -I$(top_srcdir)/src/include \
+            -I$(top_srcdir)/src/include/common \
             -I$(top_srcdir)/src/include/system \
             -I$(top_srcdir)/src/include/concurrent
 
@@ -271,9 +283,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/test/concurrent/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/test/concurrent/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/test/concurrent/Makefile
+	  $(AUTOMAKE) --foreign src/test/concurrent/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -299,6 +311,10 @@ test_concurrent$(EXEEXT): $(test_concurrent_OBJECTS) $(test_concurrent_DEPENDENC
 	@rm -f test_concurrent$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(test_concurrent_OBJECTS) $(test_concurrent_LDADD) $(LIBS)
 
+test_thread$(EXEEXT): $(test_thread_OBJECTS) $(test_thread_DEPENDENCIES) $(EXTRA_test_thread_DEPENDENCIES) 
+	@rm -f test_thread$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(test_thread_OBJECTS) $(test_thread_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -306,6 +322,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestConcurrent.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestThread.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

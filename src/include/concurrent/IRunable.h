@@ -8,7 +8,7 @@ public:
 
 	virtual ~IRunable() {}
 
-	virtual void Run() = 0;
+	virtual int Run() = 0;
 };
 
 #endif //_IRUNABLE_H_
