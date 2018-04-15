@@ -6,14 +6,17 @@
 #include <vector>
 
 //logical disk's  information
-class LogiDiskInfo 
+class LogiDisk 
 {
 public:
-	LogiDiskInfo() 
+	LogiDisk() 
 	{
+		m_usage = 0;
 		m_total = 0;
 		m_avail = 0;
 	}
+
+	std::string ToStr() const;
 
 public:
 	std::string m_name;
@@ -23,13 +26,15 @@ public:
 };
 
 //physical disk's information
-class PhysDiskInfo 
+class PhysDisk
 {
 public:
-	PhysDiskInfo() 
+	PhysDisk()
 	{
 		m_total = 0;
 	}
+
+	std::string ToStr() const;
 
 public:
 	std::string m_name;
@@ -42,18 +47,17 @@ class DiskInfo
 {
 public:
 	//get information of all logical disks
-	bool GetLogiDiskInfos(std::vector<LogiDiskInfo> &vecLdi);
+	static bool GetLogiDisks(std::vector<LogiDisk> &vecLd);
 
 	//get information of all physical disks
-	bool GetPhysDiskInfos(std::vector<PhysDiskInfo> &vecPdi);
+	static bool GetPhysDisks(std::vector<PhysDisk> &vecPd);
 
-private:
-#ifdef __LINUX__
-	bool GetPhysDiskName(std::vector<std::string>& vecPdn);
+#ifndef __WINDOWS__
+	static bool GetPhysDiskName(std::vector<std::string>& vecPdn);
 
-	std::string GetPhysDiskModel(const std::string& name);
+	static std::string GetPhysDiskModel(const std::string& name);
 
-	uint64_t GetPhysDiskSize(const std::string& name);
+	static uint64_t GetPhysDiskSize(const std::string& name);
 
 #endif //__LINUX__
 };
