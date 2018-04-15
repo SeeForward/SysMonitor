@@ -14,6 +14,7 @@
 #include "tcp_conn.h"
 #include "net_listen.h"
 #include "adapter_io.h"
+#include <atomic>
 
 #ifdef __WINDOWS__
 
@@ -575,8 +576,8 @@ void PrintLogicDiskInfo()
 {
 	//��ȡ�߼�������Ϣ
 	DiskInfo du;
-	vector<LogiDiskInfo> vecLdi;
-	if(du.GetLogiDiskInfos(vecLdi)) {
+	vector<LogiDisk> vecLdi;
+	if(du.GetLogiDisks(vecLdi)) {
 	
 		cout.setf(ios::left);
 		cout.setf(ios::fixed);
@@ -590,7 +591,7 @@ void PrintLogicDiskInfo()
 			}	
 		}
 	} else {
-		cout << "Call Disk::GetLogiDiskInfos Fail" << endl;
+		cout << "Call Disk::GetLogiDisks Fail" << endl;
 	}
 }
 
@@ -598,8 +599,8 @@ void PrintPhysDiskInfo()
 {
 	//��ȡ���������Ϣ
 	DiskInfo du;
-	vector<PhysDiskInfo> vecPdi;
-	if (du.GetPhysDiskInfos(vecPdi)) {
+	vector<PhysDisk> vecPdi;
+	if (du.GetPhysDisks(vecPdi)) {
 	
 		cout.setf(ios::left);
 
@@ -611,7 +612,7 @@ void PrintPhysDiskInfo()
 			}	
 		}
 	} else {
-		cout << "Call Disk::GetPhysDiskInfos Fail" << endl;
+		cout << "Call Disk::GetPhysDisks Fail" << endl;
 	}
 }
 

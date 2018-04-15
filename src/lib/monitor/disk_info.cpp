@@ -34,32 +34,32 @@ bool DiskInfo::GetLogiDisks(vector<LogiDisk> &vLd)
 	{
 		return false;
 	}
-	vector<string> vecName;
+	vector<string> names;
 	char *cp = nameStrs;
 	while (*cp)
 	{
-		vecName.push_back(cp);
+		names.push_back(cp);
 		cp += strlen(cp) + 1;
 	};
 	
 	LogiDisk ld;
 	uint64_t usedBytes = 0;	
-	for (size_t i = 0; i < vecName.size(); ++i) 
+	for (size_t i = 0; i < names.size(); ++i) 
 	{
 		//Ignore floppy disk
-		if ('A' == vecName[i][0] || 'B' == vecName[i][0])
+		if ('A' == names[i][0] || 'B' == names[i][0])
 		{
 			continue;
 		}
 
-		if (!::GetDiskFreeSpaceEx(vecName[i].c_str(), 
+		if (!::GetDiskFreeSpaceEx(names[i].c_str(), 
 								(PULARGE_INTEGER)&ld.m_avail, 
 								(PULARGE_INTEGER)&ld.m_total, 
 								(PULARGE_INTEGER)&usedBytes)) 
 		{
 			continue;
 		}
-		ld.m_name = vecName[i];
+		ld.m_name = names[i];
 		if (ld.m_total > 0)
 		{
 			ld.m_usage = (float)(100 * (ld.m_total - ld.m_avail) / (double) ld.m_total);
@@ -75,7 +75,7 @@ bool DiskInfo::GetLogiDisks(vector<LogiDisk> &vLd)
 
 	LogiDisk ld;
 	struct mntent *me = NULL;
-	struct statfs diskInfo;
+	struct statfs fsInfo;
 	while ((me = getmntent(fp))) 
 	{
 		if (0 == strncmp(me->mnt_type, "rootfs", 6))
@@ -88,20 +88,19 @@ bool DiskInfo::GetLogiDisks(vector<LogiDisk> &vLd)
 		}
 		ld.m_name = me->mnt_fsname;
 
-		if (0 != statfs(me->mnt_dir,&diskInfo))
+		if (0 != statfs(me->mnt_dir,&fsInfo))
 		{
 			continue;
 		}
 		//The size of bytes in a block
-		uint32_t blockSize = diskInfo.f_bsize;
+		uint32_t blockSize = fsInfo.f_bsize;
 
-		ld.m_total = blockSize * diskInfo.f_blocks;
+		ld.m_total = blockSize * fsInfo.f_blocks;
 		if (0 == ld.m_total)
 		{
-			endmntent(fp);
-			return false;
+			continue;
 		}
-		ld.m_avail = diskInfo.f_bfree * blockSize;
+		ld.m_avail = fsInfo.f_bfree * blockSize;
 		ld.m_usage = 100 * (ld.m_total - ld.m_avail) / (double)ld.m_total;
 
 		vLd.push_back(ld);
@@ -168,24 +167,24 @@ bool DiskInfo::GetPhysDisks(vector<PhysDisk> &vPd)
 		return false;
 	}
 #else
-	vector<string> vPdn;
-	if (!GetPhysDiskName(vPdn))
+	vector<string> names;
+	if (!GetPhysDiskName(names))
 	{
 		return false;
 	}
-	vPd.reserve(vPdn.size());
+	vPd.reserve(names.size());
 
 	PhysDisk pd;
-	for (size_t i = 0; i < vPdn.size(); ++i)
+	for (size_t i = 0; i < names.size(); ++i)
 	{
 		//Ignore floppy disk
-		if (strstr(vPdn[i].c_str(), "fd"))
+		if (strstr(names[i].c_str(), "fd"))
 		{
 			continue;
 		}
-		pd.m_name = vPdn[i];
-		pd.m_model = GetPhysDiskModel(vPdn[i]);
-		pd.m_total = GetPhysDiskSize(vPdn[i]);
+		pd.m_name = names[i];
+		pd.m_model = GetPhysDiskModel(names[i]);
+		pd.m_total = GetPhysDiskSize(names[i]);
 
 		vPd.push_back(pd);
 	}
@@ -195,9 +194,9 @@ bool DiskInfo::GetPhysDisks(vector<PhysDisk> &vPd)
 
 #ifndef __WINDOWS__
 
-bool DiskInfo::GetPhysDiskName(vector<string>& vPdn)
+bool DiskInfo::GetPhysDiskName(vector<string>& names)
 {
-	vPdn.clear();
+	names.clear();
 
 	FILE *fp = fopen("/proc/diskstats", "r");
 	if (!fp)
@@ -216,7 +215,7 @@ bool DiskInfo::GetPhysDiskName(vector<string>& vPdn)
 		{
 			if (reads && IsPhysDisk(major, minor))
 			{
-				vPdn.push_back(name);				
+				names.push_back(name);				
 			}
 		}
 	}
@@ -238,7 +237,7 @@ string DiskInfo::GetPhysDiskModel(const string& name)
 	{
 		struct hd_driveid hid;
 
-		if (0 != ioctl(fd,HDIO_GET_IDENTITY,&hid))
+		if (0 != ioctl(fd, HDIO_GET_IDENTITY, &hid))
 		{
 			return "";
 		}
@@ -291,6 +290,7 @@ string DiskInfo::GetPhysDiskModel(const string& name)
 		delete p_hdr;
 		return model;
 	}
+
 	return "";
 }
 
@@ -298,7 +298,7 @@ uint64_t DiskInfo::GetPhysDiskSize(const string& name)
 {
 	string strName = "/dev/" + name;
 	int fd = open(strName.c_str(), O_RDONLY | O_NONBLOCK);
-	if (fd < 0) 
+	if (fd < 0)
 	{
 		return 0;
 	}
@@ -313,14 +313,19 @@ uint64_t DiskInfo::GetPhysDiskSize(const string& name)
 	{
 		order = BLKGETSIZE;
 	}
-
-	if (0 != ioctl(fd, order, &size))
+	else
 	{
 		close(fd);
 		return 0;
 	}
 
+	if (0 != ioctl(fd, order, &size))
+	{
+		size = 0;
+	}
+
 	close(fd);
 	return size;
 }
+
 #endif //__LINUX__
