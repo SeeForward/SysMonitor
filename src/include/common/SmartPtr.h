@@ -3,7 +3,9 @@
 
 #include "RefObj.h"
 
-template <class T>
+#include <algorithm>
+
+template <typename T>
 class SmartPtr : public RefObj
 {
 public:
@@ -15,6 +17,9 @@ public:
 	explicit SmartPtr(T* p) : m_ptr(p) {}
 
 	SmartPtr(const SmartPtr<T>& other) : RefObj(other), m_ptr(other.m_ptr) {}
+
+	template <typename T1>
+	SmartPtr(const SmartPtr<T1>& other) : RefObj(other), m_ptr(dynamic_cast<T>(other.m_ptr)) {}
 
 	virtual ~SmartPtr() {}
 
