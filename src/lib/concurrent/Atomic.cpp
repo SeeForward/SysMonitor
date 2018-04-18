@@ -1,8 +1,8 @@
 #include "Atomic.h"
 
-Atomic::Atomic()
+Atomic::Atomic(int v)
 {
-    m_val = ATOMIC_INIT(0);
+    m_val = ATOMIC_INIT(v);
 }
 
 Atomic::~Atomic() {}

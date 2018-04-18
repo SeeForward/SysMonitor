@@ -2,7 +2,7 @@
 #define __REF_OBJ_H__
 
 
-#include <atomic>
+#include "Atomic.h"
 
 class RefObj
 {
@@ -25,7 +25,7 @@ protected:
     void Swap(const RefObj &other);
 
 private:
-    mutable std::atomic<int> *m_pCnt;
+    mutable Atomic *m_pCnt;
 };
 
 

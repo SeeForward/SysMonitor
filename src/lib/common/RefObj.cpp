@@ -4,7 +4,7 @@
 
 RefObj::RefObj()
 {
-    m_pCnt = new std::atomic<int>(1);
+    m_pCnt = new Atomic(1);
 }
 
 RefObj::RefObj(const RefObj &other)
@@ -33,7 +33,7 @@ int RefObj::Value() const
 {
     if (m_pCnt)
     {
-        return m_pCnt->load();
+        return m_pCnt->Value();
     }
     return 0;
 }
@@ -42,7 +42,7 @@ void RefObj::IncRef() const
 {
     if (m_pCnt)
     {
-        m_pCnt->fetch_add(1);
+        m_pCnt->Inc();
     }
 }
 
@@ -53,7 +53,7 @@ void RefObj::DecRef() const
         return ;
     }
 
-    if (0 == (m_pCnt->fetch_sub(1)))
+    if (0 == (m_pCnt->DecRet()))
     {
         delete m_pCnt;
         m_pCnt = NULL;

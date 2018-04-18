@@ -6,7 +6,7 @@
 class Atomic
 {
 public:
-    Atomic();
+    Atomic(int v = 0);
 
     ~Atomic();
 
