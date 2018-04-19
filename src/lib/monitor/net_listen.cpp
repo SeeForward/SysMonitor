@@ -124,7 +124,7 @@ bool ListenProc::Get(vector<ListenProc> &vecPls)
 		plsTmp.m_localAddr = pAddr;
 		
 		plsTmp.m_pid = TcpInode::Inst()->GetTcpPidByInode(inode);
-		plsTmp.m_name = ProcessName::Inst()->GetNameByPid(plsTmp.m_pid);
+		plsTmp.m_name = Singleton<ProcessName>::Instance().GetNameByPid(plsTmp.m_pid);
 		vecPls.push_back(plsTmp);
 	}
 	fclose(fp);
@@ -156,7 +156,7 @@ bool ListenProc::Get(vector<ListenProc> &vecPls)
 		plsTmp.m_localAddr = pAddr;
 		
 		plsTmp.m_pid = TcpInode::Inst()->GetTcpPidByInode(inode);
-		plsTmp.m_name = ProcessName::Inst()->GetNameByPid(plsTmp.m_pid);
+		plsTmp.m_name = Singleton<ProcessName>::Instance().GetNameByPid(plsTmp.m_pid);
 		vecPls.push_back(plsTmp);
 	}
 	fclose(fp);

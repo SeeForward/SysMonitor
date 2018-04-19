@@ -103,10 +103,8 @@ void test_process_time()
 
 void test_process_name()
 {
-    ProcessName *pPn = ProcessName::Inst();
-
     map<int32_t, std::string> mapPidName;
-    pPn->GetPidNameMap(mapPidName);
+    Singleton<ProcessName>::Instance().GetPidNameMap(mapPidName);
 
     for (map<int32_t, string>::iterator itr = mapPidName.begin(); itr != mapPidName.end(); ++itr)
     {

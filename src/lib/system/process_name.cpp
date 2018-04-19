@@ -10,12 +10,6 @@ using std::vector;
 
 ProcessName::ProcessName() {}
 
-ProcessName* ProcessName::Inst()
-{
-	static ProcessName pn;
-	return &pn;
-}
-
 string ProcessName::GetNameByPid(int32_t pid) 
 {
 	//first call, load the mapping of pid and name

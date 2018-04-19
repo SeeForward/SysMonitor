@@ -119,7 +119,7 @@ bool TcpConn::Get(vector<TcpConn> &vecPtc)
 		ptcTmp.m_remoteAddr = pAddr;
 		
 		ptcTmp.m_pid = TcpInode::Inst()->GetTcpPidByInode(inode);
-		ptcTmp.m_name = ProcessName::Inst()->GetNameByPid(ptcTmp.m_pid);
+		ptcTmp.m_name = Singleton<ProcessName>::Instance().GetNameByPid(ptcTmp.m_pid);
 		vecPtc.push_back(ptcTmp);
 	}
 

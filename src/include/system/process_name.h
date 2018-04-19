@@ -6,19 +6,19 @@
 #include <string>
 
 #include "mutex.h"
+#include "Singleton.h"
 
 class ProcessName
 {
+	friend class Singleton<ProcessName>;
 public:
-	static ProcessName* Inst();
-	
 	//get the process name by pid
 	std::string GetNameByPid(int32_t pid);
 
 	bool GetPidNameMap(std::map<int32_t, std::string> &mapPidName, bool isFlush = false);
 
 private:
-	//make only get object by Inst()
+	//make only get object by Singleton
 	ProcessName();
 
 private:

@@ -37,7 +37,7 @@ bool DiskProc::GetUsages(vector<DiskProcUsage> &vecPdu)
 	for (size_t i = 0; i < vecPic.size(); ++i) 
 	{
 		pduTmp.m_pid = vecPic[i].m_pid;
-		pduTmp.m_name = ProcessName::Inst()->GetNameByPid(pduTmp.m_pid);
+		pduTmp.m_name = Singleton<ProcessName>::Instance().GetNameByPid(pduTmp.m_pid);
 
 		if (ms) {
 			//find io count of last time

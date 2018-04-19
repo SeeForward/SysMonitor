@@ -69,7 +69,7 @@ bool CpuProc::GetUsages(vector<CpuProcUsage> &vecPcu)
 	for (size_t i = 0; i < vecPid.size(); ++i) 
 	{
 		pcuTmp.m_pid = vecPid[i];
-		pcuTmp.m_name = ProcessName::Inst()->GetNameByPid(vecPid[i]);
+		pcuTmp.m_name = Singleton<ProcessName>::Instance().GetNameByPid(vecPid[i]);
 		pcuTmp.m_usage = GetUsage(vecPid[i]);
 
 		if (pcuTmp.m_usage > 100.0)
