@@ -86,7 +86,7 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-noinst_PROGRAMS = test_smartptr$(EXEEXT)
+noinst_PROGRAMS = test_smartptr$(EXEEXT) test_string$(EXEEXT)
 subdir = src/test/common
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
@@ -100,7 +100,12 @@ CONFIG_CLEAN_VPATH_FILES =
 PROGRAMS = $(noinst_PROGRAMS)
 am_test_smartptr_OBJECTS = TestSmartPtr.$(OBJEXT)
 test_smartptr_OBJECTS = $(am_test_smartptr_OBJECTS)
-test_smartptr_DEPENDENCIES = $(top_srcdir)/src/lib/common/libcommon.a
+test_smartptr_DEPENDENCIES = $(top_srcdir)/src/lib/common/libcommon.a \
+	$(top_srcdir)/src/lib/concurrent/libconcurrent.a
+am_test_string_OBJECTS = TestString.$(OBJEXT)
+test_string_OBJECTS = $(am_test_string_OBJECTS)
+test_string_DEPENDENCIES = $(top_srcdir)/src/lib/common/libcommon.a \
+	$(top_srcdir)/src/lib/concurrent/libconcurrent.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -130,8 +135,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(test_smartptr_SOURCES)
-DIST_SOURCES = $(test_smartptr_SOURCES)
+SOURCES = $(test_smartptr_SOURCES) $(test_string_SOURCES)
+DIST_SOURCES = $(test_smartptr_SOURCES) $(test_string_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -252,8 +257,16 @@ top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
 test_smartptr_SOURCES = TestSmartPtr.cpp
-test_smartptr_LDADD = $(top_srcdir)/src/lib/common/libcommon.a 
-INCLUDES = -I$(top_srcdir)/src/include/common
+test_smartptr_LDADD = $(top_srcdir)/src/lib/common/libcommon.a \
+                    $(top_srcdir)/src/lib/concurrent/libconcurrent.a 
+
+test_string_SOURCES = TestString.cpp
+test_string_LDADD = $(top_srcdir)/src/lib/common/libcommon.a \
+                    $(top_srcdir)/src/lib/concurrent/libconcurrent.a 
+
+INCLUDES = -I$(top_srcdir)/src/include/common \
+            -I$(top_srcdir)/src/include/concurrent
+
 all: all-am
 
 .SUFFIXES:
@@ -267,9 +280,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --foreign src/test/common/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/test/common/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --foreign src/test/common/Makefile
+	  $(AUTOMAKE) --gnu src/test/common/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -295,6 +308,10 @@ test_smartptr$(EXEEXT): $(test_smartptr_OBJECTS) $(test_smartptr_DEPENDENCIES) $
 	@rm -f test_smartptr$(EXEEXT)
 	$(AM_V_CXXLD)$(CXXLINK) $(test_smartptr_OBJECTS) $(test_smartptr_LDADD) $(LIBS)
 
+test_string$(EXEEXT): $(test_string_OBJECTS) $(test_string_DEPENDENCIES) $(EXTRA_test_string_DEPENDENCIES) 
+	@rm -f test_string$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(test_string_OBJECTS) $(test_string_LDADD) $(LIBS)
+
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
 
@@ -302,6 +319,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestSmartPtr.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/TestString.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<

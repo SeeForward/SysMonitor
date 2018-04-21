@@ -86,7 +86,8 @@ POST_INSTALL = :
 NORMAL_UNINSTALL = :
 PRE_UNINSTALL = :
 POST_UNINSTALL = :
-subdir = src/lib/concurrent
+noinst_PROGRAMS = test_ip$(EXEEXT)
+subdir = src/test/net
 ACLOCAL_M4 = $(top_srcdir)/aclocal.m4
 am__aclocal_m4_deps = $(top_srcdir)/configure.ac
 am__configure_deps = $(am__aclocal_m4_deps) $(CONFIGURE_DEPENDENCIES) \
@@ -96,19 +97,11 @@ mkinstalldirs = $(install_sh) -d
 CONFIG_HEADER = $(top_builddir)/config.h
 CONFIG_CLEAN_FILES =
 CONFIG_CLEAN_VPATH_FILES =
-LIBRARIES = $(noinst_LIBRARIES)
-AR = ar
-ARFLAGS = cru
-AM_V_AR = $(am__v_AR_@AM_V@)
-am__v_AR_ = $(am__v_AR_@AM_DEFAULT_V@)
-am__v_AR_0 = @echo "  AR      " $@;
-am__v_AR_1 = 
-libconcurrent_a_AR = $(AR) $(ARFLAGS)
-libconcurrent_a_LIBADD =
-am_libconcurrent_a_OBJECTS = libconcurrent_a-Atomic.$(OBJEXT) \
-	libconcurrent_a-mutex.$(OBJEXT) \
-	libconcurrent_a-Thread.$(OBJEXT)
-libconcurrent_a_OBJECTS = $(am_libconcurrent_a_OBJECTS)
+PROGRAMS = $(noinst_PROGRAMS)
+am_test_ip_OBJECTS = test_ip.$(OBJEXT)
+test_ip_OBJECTS = $(am_test_ip_OBJECTS)
+test_ip_DEPENDENCIES = $(top_srcdir)/src/lib/net/libnet.a \
+	$(top_srcdir)/src/lib/common/libcommon.a
 AM_V_P = $(am__v_P_@AM_V@)
 am__v_P_ = $(am__v_P_@AM_DEFAULT_V@)
 am__v_P_0 = false
@@ -125,10 +118,6 @@ DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/depcomp
 am__depfiles_maybe = depfiles
 am__mv = mv -f
-AM_V_lt = $(am__v_lt_@AM_V@)
-am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
-am__v_lt_0 = --silent
-am__v_lt_1 = 
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
 AM_V_CXX = $(am__v_CXX_@AM_V@)
@@ -142,8 +131,8 @@ AM_V_CXXLD = $(am__v_CXXLD_@AM_V@)
 am__v_CXXLD_ = $(am__v_CXXLD_@AM_DEFAULT_V@)
 am__v_CXXLD_0 = @echo "  CXXLD   " $@;
 am__v_CXXLD_1 = 
-SOURCES = $(libconcurrent_a_SOURCES)
-DIST_SOURCES = $(libconcurrent_a_SOURCES)
+SOURCES = $(test_ip_SOURCES)
+DIST_SOURCES = $(test_ip_SOURCES)
 am__can_run_installinfo = \
   case $$AM_UPDATE_INFO_DIR in \
     n|no|NO) false;; \
@@ -263,11 +252,12 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-noinst_LIBRARIES = libconcurrent.a
-libconcurrent_a_SOURCES = Atomic.cpp mutex.cpp Thread.cpp
-libconcurrent_a_CXXFLAGS = -D__LINUX__ -D__STDC_FORMAT_MACROS 
+test_ip_SOURCES = test_ip.cpp
+test_ip_LDADD = $(top_srcdir)/src/lib/net/libnet.a \
+                $(top_srcdir)/src/lib/common/libcommon.a
+
 INCLUDES = -I$(top_srcdir)/src/include/common \
-            -I$(top_srcdir)/src/include/concurrent
+            -I$(top_srcdir)/src/include/net 
 
 all: all-am
 
@@ -282,9 +272,9 @@ $(srcdir)/Makefile.in:  $(srcdir)/Makefile.am  $(am__configure_deps)
 	      exit 1;; \
 	  esac; \
 	done; \
-	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/lib/concurrent/Makefile'; \
+	echo ' cd $(top_srcdir) && $(AUTOMAKE) --gnu src/test/net/Makefile'; \
 	$(am__cd) $(top_srcdir) && \
-	  $(AUTOMAKE) --gnu src/lib/concurrent/Makefile
+	  $(AUTOMAKE) --gnu src/test/net/Makefile
 Makefile: $(srcdir)/Makefile.in $(top_builddir)/config.status
 	@case '$?' in \
 	  *config.status*) \
@@ -303,13 +293,12 @@ $(ACLOCAL_M4):  $(am__aclocal_m4_deps)
 	cd $(top_builddir) && $(MAKE) $(AM_MAKEFLAGS) am--refresh
 $(am__aclocal_m4_deps):
 
-clean-noinstLIBRARIES:
-	-test -z "$(noinst_LIBRARIES)" || rm -f $(noinst_LIBRARIES)
+clean-noinstPROGRAMS:
+	-test -z "$(noinst_PROGRAMS)" || rm -f $(noinst_PROGRAMS)
 
-libconcurrent.a: $(libconcurrent_a_OBJECTS) $(libconcurrent_a_DEPENDENCIES) $(EXTRA_libconcurrent_a_DEPENDENCIES) 
-	$(AM_V_at)-rm -f libconcurrent.a
-	$(AM_V_AR)$(libconcurrent_a_AR) libconcurrent.a $(libconcurrent_a_OBJECTS) $(libconcurrent_a_LIBADD)
-	$(AM_V_at)$(RANLIB) libconcurrent.a
+test_ip$(EXEEXT): $(test_ip_OBJECTS) $(test_ip_DEPENDENCIES) $(EXTRA_test_ip_DEPENDENCIES) 
+	@rm -f test_ip$(EXEEXT)
+	$(AM_V_CXXLD)$(CXXLINK) $(test_ip_OBJECTS) $(test_ip_LDADD) $(LIBS)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
@@ -317,9 +306,7 @@ mostlyclean-compile:
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libconcurrent_a-Atomic.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libconcurrent_a-Thread.Po@am__quote@
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/libconcurrent_a-mutex.Po@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/test_ip.Po@am__quote@
 
 .cpp.o:
 @am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXXCOMPILE) -MT $@ -MD -MP -MF $(DEPDIR)/$*.Tpo -c -o $@ $<
@@ -334,48 +321,6 @@ distclean-compile:
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='$<' object='$@' libtool=no @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXXCOMPILE) -c -o $@ `$(CYGPATH_W) '$<'`
-
-libconcurrent_a-Atomic.o: Atomic.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-Atomic.o -MD -MP -MF $(DEPDIR)/libconcurrent_a-Atomic.Tpo -c -o libconcurrent_a-Atomic.o `test -f 'Atomic.cpp' || echo '$(srcdir)/'`Atomic.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-Atomic.Tpo $(DEPDIR)/libconcurrent_a-Atomic.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Atomic.cpp' object='libconcurrent_a-Atomic.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-Atomic.o `test -f 'Atomic.cpp' || echo '$(srcdir)/'`Atomic.cpp
-
-libconcurrent_a-Atomic.obj: Atomic.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-Atomic.obj -MD -MP -MF $(DEPDIR)/libconcurrent_a-Atomic.Tpo -c -o libconcurrent_a-Atomic.obj `if test -f 'Atomic.cpp'; then $(CYGPATH_W) 'Atomic.cpp'; else $(CYGPATH_W) '$(srcdir)/Atomic.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-Atomic.Tpo $(DEPDIR)/libconcurrent_a-Atomic.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Atomic.cpp' object='libconcurrent_a-Atomic.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-Atomic.obj `if test -f 'Atomic.cpp'; then $(CYGPATH_W) 'Atomic.cpp'; else $(CYGPATH_W) '$(srcdir)/Atomic.cpp'; fi`
-
-libconcurrent_a-mutex.o: mutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-mutex.o -MD -MP -MF $(DEPDIR)/libconcurrent_a-mutex.Tpo -c -o libconcurrent_a-mutex.o `test -f 'mutex.cpp' || echo '$(srcdir)/'`mutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-mutex.Tpo $(DEPDIR)/libconcurrent_a-mutex.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='libconcurrent_a-mutex.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-mutex.o `test -f 'mutex.cpp' || echo '$(srcdir)/'`mutex.cpp
-
-libconcurrent_a-mutex.obj: mutex.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-mutex.obj -MD -MP -MF $(DEPDIR)/libconcurrent_a-mutex.Tpo -c -o libconcurrent_a-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-mutex.Tpo $(DEPDIR)/libconcurrent_a-mutex.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='mutex.cpp' object='libconcurrent_a-mutex.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-mutex.obj `if test -f 'mutex.cpp'; then $(CYGPATH_W) 'mutex.cpp'; else $(CYGPATH_W) '$(srcdir)/mutex.cpp'; fi`
-
-libconcurrent_a-Thread.o: Thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-Thread.o -MD -MP -MF $(DEPDIR)/libconcurrent_a-Thread.Tpo -c -o libconcurrent_a-Thread.o `test -f 'Thread.cpp' || echo '$(srcdir)/'`Thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-Thread.Tpo $(DEPDIR)/libconcurrent_a-Thread.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Thread.cpp' object='libconcurrent_a-Thread.o' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-Thread.o `test -f 'Thread.cpp' || echo '$(srcdir)/'`Thread.cpp
-
-libconcurrent_a-Thread.obj: Thread.cpp
-@am__fastdepCXX_TRUE@	$(AM_V_CXX)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -MT libconcurrent_a-Thread.obj -MD -MP -MF $(DEPDIR)/libconcurrent_a-Thread.Tpo -c -o libconcurrent_a-Thread.obj `if test -f 'Thread.cpp'; then $(CYGPATH_W) 'Thread.cpp'; else $(CYGPATH_W) '$(srcdir)/Thread.cpp'; fi`
-@am__fastdepCXX_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libconcurrent_a-Thread.Tpo $(DEPDIR)/libconcurrent_a-Thread.Po
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	$(AM_V_CXX)source='Thread.cpp' object='libconcurrent_a-Thread.obj' libtool=no @AMDEPBACKSLASH@
-@AMDEP_TRUE@@am__fastdepCXX_FALSE@	DEPDIR=$(DEPDIR) $(CXXDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCXX_FALSE@	$(AM_V_CXX@am__nodep@)$(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libconcurrent_a_CXXFLAGS) $(CXXFLAGS) -c -o libconcurrent_a-Thread.obj `if test -f 'Thread.cpp'; then $(CYGPATH_W) 'Thread.cpp'; else $(CYGPATH_W) '$(srcdir)/Thread.cpp'; fi`
 
 ID: $(am__tagged_files)
 	$(am__define_uniq_tagged_files); mkid -fID $$unique
@@ -461,7 +406,7 @@ distdir: $(DISTFILES)
 	done
 check-am: all-am
 check: check-am
-all-am: Makefile $(LIBRARIES)
+all-am: Makefile $(PROGRAMS)
 installdirs:
 install: install-am
 install-exec: install-exec-am
@@ -495,7 +440,7 @@ maintainer-clean-generic:
 	@echo "it deletes files that may require special tools to rebuild."
 clean: clean-am
 
-clean-am: clean-generic clean-noinstLIBRARIES mostlyclean-am
+clean-am: clean-generic clean-noinstPROGRAMS mostlyclean-am
 
 distclean: distclean-am
 	-rm -rf ./$(DEPDIR)
@@ -565,7 +510,7 @@ uninstall-am:
 .MAKE: install-am install-strip
 
 .PHONY: CTAGS GTAGS TAGS all all-am check check-am clean clean-generic \
-	clean-noinstLIBRARIES cscopelist-am ctags ctags-am distclean \
+	clean-noinstPROGRAMS cscopelist-am ctags ctags-am distclean \
 	distclean-compile distclean-generic distclean-tags distdir dvi \
 	dvi-am html html-am info info-am install install-am \
 	install-data install-data-am install-dvi install-dvi-am \
