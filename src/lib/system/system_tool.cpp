@@ -2,7 +2,7 @@
 //Author:lidengke
 
 #include "system_tool.h"
-#include "string_util.h"
+#include "StringUtil.h"
 
 #ifdef __WINDOWS__
 #	include <Windows.h>
@@ -107,7 +107,7 @@ bool GetPids(vector<int32_t> &pids)
 	while ((pCurDir = readdir(pDir)) != NULL) 
 	{
 		//determine whether is a process
-		if (IsNumber(pCurDir->d_name)) {
+		if (StringUtil::IsNumber(pCurDir->d_name)){
 			pids.push_back(atoi(pCurDir->d_name));
 		}
 	}
