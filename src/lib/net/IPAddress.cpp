@@ -1,6 +1,7 @@
 #include "IPAddress.h"
 #include "StringUtil.h"
 
+IPAddress::IPAddress() {}
 
 IPAddress::IPAddress(const std::string &ip)
 {

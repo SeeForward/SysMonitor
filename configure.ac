@@ -39,8 +39,12 @@ AC_CONFIG_FILES([Makefile
                  src/lib/common/Makefile
                  src/lib/concurrent/Makefile
                  src/lib/monitor/Makefile
+                 src/lib/net/Makefile
                  src/lib/system/Makefile
                  src/test/common/Makefile
+                 src/test/concurrent/Makefile
                  src/test/monitor/Makefile
-                 src/test/system/Makefile])
+                 src/test/net/Makefile
+                 src/test/system/Makefile
+                 ])
 AC_OUTPUT

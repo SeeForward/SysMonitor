@@ -6,6 +6,7 @@
 class IPAddress
 {
 public:
+    IPAddress();
     IPAddress(const std::string &ip);
 
     bool Valid() const;
