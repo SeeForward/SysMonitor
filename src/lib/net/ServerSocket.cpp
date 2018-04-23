@@ -9,33 +9,28 @@
 #include <arpa/inet.h>
 #endif
 
-ServerSocket::ServerSocket()
-{
-    m_sock = socket(AF_INET,SOCK_STREAM,0);
-}
-
 ServerSocket::ServerSocket(const SocketAddress &local) 
 {
     m_local = local;
-    m_sock = socket(AF_INET,SOCK_STREAM,0);
+    m_sock = socket(AF_INET, SOCK_STREAM, 0);
 }
 
 ServerSocket::~ServerSocket() {}
 
 int ServerSocket::Listen(int maxNum)
 {
-    sockaddr_in serverAddr;
+    sockaddr_in localAddr;
     if (m_local.IP().Valid())
     {
-        serverAddr.sin_addr.s_addr = inet_addr(m_local.IP().Str().c_str());
+        localAddr.sin_addr.s_addr = inet_addr(m_local.IP().Str().c_str());
     }
     else
     {
-        serverAddr.sin_addr.s_addr = htonl(INADDR_ANY);
+        localAddr.sin_addr.s_addr = htonl(INADDR_ANY);
     }
-    serverAddr.sin_family=AF_INET;
-    serverAddr.sin_port=htons(m_local.Port());
-    int rc = bind(m_sock, (sockaddr*)&serverAddr, sizeof(sockaddr));
+    localAddr.sin_family = AF_INET;
+    localAddr.sin_port = htons(m_local.Port());
+    int rc = bind(m_sock, (sockaddr*)&localAddr, sizeof(sockaddr));
     if (0 != rc)
     {
         return rc;
@@ -56,10 +51,23 @@ int ServerSocket::Accept(ClientSocket &client)
 
     client.SetSocket(clientSock);
 
-    SocketAddress sockAddr;
-    sockAddr.SetIP(inet_ntoa(clientAddr.sin_addr));
-    sockAddr.SetPort(ntohs(clientAddr.sin_port));
-    client.SetLocalAddress(sockAddr);
+    // remote ip address
+    SocketAddress remoteAddr;
+    remoteAddr.SetIP(inet_ntoa(clientAddr.sin_addr));
+    remoteAddr.SetPort(ntohs(clientAddr.sin_port));
+    client.SetRemoteAddress(remoteAddr);
+
+    // local ip address
+    sockaddr_in localAddr;
+    len = sizeof(sockaddr_in);
+    int rc = getsockname(m_sock, (sockaddr*)&localAddr, &len);
+    if (0 == rc)
+    {
+        SocketAddress localAddrEx;
+        localAddrEx.SetIP(inet_ntoa(localAddr.sin_addr));
+        localAddrEx.SetPort(localAddr.sin_port);
+        client.SetLocalAddress(localAddrEx);
+    }
 
     return 0;
 }

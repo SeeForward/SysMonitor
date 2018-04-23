@@ -12,11 +12,16 @@ public:
 
     void SetSocket(SOCKET sock);
     void SetLocalAddress(const SocketAddress &local);
+    void SetRemoteAddress(const SocketAddress &remote);
+
+    const SocketAddress& LocalAdderss() const;
+    const SocketAddress& RemoteAdderss() const;
 
     int Send(uint8_t *buf, int len);
     int Recv(uint8_t *buf, int len);
 
-//protected:
+protected:
+    int           m_protocol;
     SOCKET        m_sock;
     SocketAddress m_local;
     SocketAddress m_remote;

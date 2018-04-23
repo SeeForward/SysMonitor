@@ -7,10 +7,9 @@
 class ServerSocket : public Socket
 {
 public:
-    ServerSocket();
     ServerSocket(const SocketAddress &local);
     ~ServerSocket();
-
+    
     int Listen(int maxNum);
 
     int Accept(ClientSocket& client);

@@ -1,7 +1,10 @@
 #include "IPAddress.h"
 #include "StringUtil.h"
 
-IPAddress::IPAddress() {}
+IPAddress::IPAddress()
+{
+    m_vaild = false;
+}
 
 IPAddress::IPAddress(const std::string &ip)
 {

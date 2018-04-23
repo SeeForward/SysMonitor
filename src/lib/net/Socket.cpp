@@ -24,6 +24,21 @@ void Socket::SetLocalAddress(const SocketAddress &local)
     m_local = local;
 }
 
+void Socket::SetRemoteAddress(const SocketAddress &remote)
+{
+    m_remote = remote;
+}
+
+const SocketAddress& Socket::LocalAdderss() const
+{
+    return m_local;
+}
+
+const SocketAddress& Socket::RemoteAdderss() const
+{
+    return m_remote;
+}
+
 int Socket::Send(uint8_t *buf, int len)
 {
     return send(m_sock, buf, len, 0);

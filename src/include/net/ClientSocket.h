@@ -7,8 +7,6 @@ class ClientSocket : public Socket
 {
 public:
     ClientSocket();
-    ClientSocket(const SocketAddress &local);
-
     ~ClientSocket();
 
     int Connect(const SocketAddress &remote);
