@@ -1,5 +1,5 @@
 #include "SocketAddress.h"
-
+#include "StringUtil.h"
 
 SocketAddress::SocketAddress() : m_port(0) { }
 
@@ -38,3 +38,7 @@ int SocketAddress::Port() const
     return m_port;
 }
 
+std::string SocketAddress::ToStr() const
+{
+    return m_ip.Str() + ":" + StringUtil::ToStr(m_port);
+}

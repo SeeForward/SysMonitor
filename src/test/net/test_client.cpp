@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string.h>
 #include "ClientSocket.h"
+#include "system_tool.h"
 
 using namespace std;
 
@@ -17,6 +18,9 @@ int main(int argc, const char * argv[])
         cout << "connect error, rc : " << errno << endl;
         return -errno;
     }
+
+    cout << "local: " << client.LocalAdderss().ToStr() << endl;
+    cout << "remote: " << client.RemoteAdderss().ToStr() << endl;
 
     char buf[100] = "client message";
     rc = client.Send((uint8_t*)buf, strlen(buf));
@@ -35,6 +39,8 @@ int main(int argc, const char * argv[])
 
     buf[rc] = '\0';
     cout << buf << endl;
+
+    SleepMs(1000 * 1000);
 
     return 0;
 }

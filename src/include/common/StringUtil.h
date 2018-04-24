@@ -75,7 +75,7 @@ public:
     static double ToDouble(const string& s);
 
     template<class T>
-    string ToStr(T t)
+    static string ToStr(T t)
     {
         ostringstream os;
         os.precision(numeric_limits<T>::digits10);
@@ -84,7 +84,7 @@ public:
     }
 
     template<class T> 
-    string ToStr(T t, int radix)
+    static string ToStr(T t, int radix)
     {
         ostringstream os;
         os.precision(numeric_limits<T>::digits10);

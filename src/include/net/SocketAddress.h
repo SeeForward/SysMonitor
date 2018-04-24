@@ -18,6 +18,8 @@ public:
     const IPAddress& IP() const;
     int Port() const;
 
+    std::string ToStr() const;
+
 private:
     IPAddress m_ip;
     int       m_port;
