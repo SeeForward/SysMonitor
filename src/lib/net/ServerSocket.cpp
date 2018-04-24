@@ -65,7 +65,7 @@ int ServerSocket::Accept(ClientSocket &client)
     {
         SocketAddress localAddrEx;
         localAddrEx.SetIP(inet_ntoa(localAddr.sin_addr));
-        localAddrEx.SetPort(localAddr.sin_port);
+        localAddrEx.SetPort(ntohs(localAddr.sin_port));
         client.SetLocalAddress(localAddrEx);
     }
 
