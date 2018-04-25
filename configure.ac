@@ -38,6 +38,7 @@ AC_CONFIG_FILES([Makefile
                  src/app/Makefile
                  src/lib/common/Makefile
                  src/lib/concurrent/Makefile
+                 src/lib/date/Makefile
                  src/lib/monitor/Makefile
                  src/lib/net/Makefile
                  src/lib/system/Makefile

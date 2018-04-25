@@ -138,32 +138,45 @@ string StringUtil::TrimRight(const string& s)
     return r;
 }
 
-int32_t StringUtil::ToInt32(const string& s, int radix)
+int StringUtil::ToInt(const string& s, int radix)
 {
     int i;
+    FromStr(s, i, radix);
+}
+
+unsigned int StringUtil::ToUInt(const string& s, int radix)
+{
+    unsigned int i;
+    FromStr(s, i, radix);
+    return i;
+}
+
+int32_t StringUtil::ToInt32(const string& s, int radix)
+{
+    int32_t i;
     FromStr(s, i, radix);
     return i;
 }
 
 int64_t StringUtil::ToInt64(const string& s, int radix)
 {
-    long l;
-    FromStr(s, l, radix);
-    return l;
+    int64_t i;
+    FromStr(s, i, radix);
+    return i;
 }
 
 uint32_t StringUtil::ToUInt32(const string& s, int radix)
 {
-    unsigned int ui;
-    FromStr(s, ui, radix);
-    return ui;
+    uint32_t u;
+    FromStr(s, u, radix);
+    return u;
 }
 
 uint64_t StringUtil::ToUInt64(const string& s, int radix)
 {
-    unsigned long ul;
-    FromStr(s, ul, radix);
-    return ul;
+    uint64_t u;
+    FromStr(s, u, radix);
+    return u;
 }
 
 float StringUtil::ToFloat(const string& s)

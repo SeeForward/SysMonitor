@@ -67,6 +67,8 @@ public:
     static string TrimRight(const string& s);
     static string Trim(const string& s);
 
+    static int ToInt(const string& s, int radix = 10);
+    static unsigned int ToUInt(const string& s, int radix = 10);
     static int32_t ToInt32(const string& s, int radix = 10);
     static int64_t ToInt64(const string& s, int radix = 10);
     static uint32_t ToUInt32(const string& s, int radix = 10);
