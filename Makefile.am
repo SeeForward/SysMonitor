@@ -7,6 +7,7 @@ SUBDIRS=    src/lib/common \
             src/lib/system \
             src/test/common \
             src/test/concurrent \
+            src/test/date \
             src/test/monitor \
             src/test/net \
             src/test/system \

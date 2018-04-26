@@ -16,87 +16,87 @@
 class Date
 {
 public:
-	Date();
-	Date(time_t t);
-	Date(struct tm t);
+    Date();
+    Date(time_t t);
+    Date(struct tm t);
 
-	std::string Format(const DateFormat& df = DateFormat()) const;
+    std::string Format(const DateFormat& df = DateFormat()) const;
 
-	int Year() const
+    int Year() const
     {
-		return m_tm.tm_year + BASE_YEAR;
-	}
-	int Month() const
+        return m_tm.tm_year + BASE_YEAR;
+    }
+    int Month() const
     {
-		return m_tm.tm_mon + 1;
-	}
-	int Day() const
+        return m_tm.tm_mon + 1;
+    }
+    int Day() const
     {
-		return m_tm.tm_mday;
-	}
-	int Hour() const
+        return m_tm.tm_mday;
+    }
+    int Hour() const
     {
-		return m_tm.tm_hour;
-	}
-	int Minute() const
+        return m_tm.tm_hour;
+    }
+    int Minute() const
     {
-		return m_tm.tm_min;
-	}
-	int Second() const
+        return m_tm.tm_min;
+    }
+    int Second() const
     {
-		return m_tm.tm_sec;
-	}
+        return m_tm.tm_sec;
+    }
 
-	void SetYear(int year);
-	void SetMonth(int month);
-	void SetDay(int day);
-	void SetHour(int hour);
-	void SetMinute(int minute);
-	void SetSecond(int second);
-	void AddYears(int years);
-	void AddMonths(int months);
-	void AddDays(int days);
-	void AddHours(int hours);
-	void AddMinutes(int minutes);
-	void AddSeconds(int seconds);
+    void SetYear(int year);
+    void SetMonth(int month);
+    void SetDay(int day);
+    void SetHour(int hour);
+    void SetMinute(int minute);
+    void SetSecond(int second);
+    void AddYears(int years);
+    void AddMonths(int months);
+    void AddDays(int days);
+    void AddHours(int hours);
+    void AddMinutes(int minutes);
+    void AddSeconds(int seconds);
 
-	int64_t operator - (const Date& other) const;
+    int64_t operator - (const Date& other) const;
 
-	bool operator == (const Date& other) const;
-	bool operator != (const Date& other) const;	
-	bool operator < (const Date& other) const;
-	bool operator <= (const Date& other) const;
-	bool operator > (const Date& other) const;
-	bool operator >= (const Date& other) const;
+    bool operator == (const Date& other) const;
+    bool operator != (const Date& other) const;	
+    bool operator < (const Date& other) const;
+    bool operator <= (const Date& other) const;
+    bool operator > (const Date& other) const;
+    bool operator >= (const Date& other) const;
 
-	bool IsLeapYear() const
+    bool IsLeapYear() const
     {
-		int year = m_tm.tm_year + BASE_YEAR;
-		return IsLeapYear(year);
-	}
+        int year = m_tm.tm_year + BASE_YEAR;
+        return IsLeapYear(year);
+    }
 
-	static Date Now()
+    static Date Now()
     {
-		return Date();
-	}
+        return Date();
+    }
 
     static int64_t Escape(const Date& dateBegin, const Date& dateEnd);
 
-	static bool IsLeapYear(int year)
+    static bool IsLeapYear(int year)
     {
-		return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
-	}
+        return ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0);
+    }
 
 private:
-	bool IsVaildTime(struct tm* pTm);
+    bool IsVaildTime(struct tm* pTm);
 
-	int SetDate(struct tm* pTm);
+    int SetDate(struct tm* pTm);
 
 private:
-	struct tm m_tm;
+    struct tm m_tm;
 
-	static uint8_t m_leapMonthDays[MONTHS_PER_YEAR];
-	static uint8_t m_nonLeapMonthDays[MONTHS_PER_YEAR];
+    static uint8_t m_leapMonthDays[MONTHS_PER_YEAR];
+    static uint8_t m_nonLeapMonthDays[MONTHS_PER_YEAR];
 };
 
 #endif //__DATE_H__
