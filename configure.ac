@@ -39,12 +39,14 @@ AC_CONFIG_FILES([Makefile
                  src/lib/common/Makefile
                  src/lib/concurrent/Makefile
                  src/lib/date/Makefile
+                 src/lib/log/Makefile
                  src/lib/monitor/Makefile
                  src/lib/net/Makefile
                  src/lib/system/Makefile
                  src/test/common/Makefile
                  src/test/concurrent/Makefile
                  src/test/date/Makefile
+                 src/test/log/Makefile
                  src/test/monitor/Makefile
                  src/test/net/Makefile
                  src/test/system/Makefile
