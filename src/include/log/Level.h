@@ -6,22 +6,22 @@
 class Level
 {
 public:
-    enum LevelType
+    enum Type
     {
-        LEVEL_FATAL,
-        LEVEL_ERROR,
-        LEVEL_WARN,
-        LEVEL_NOTICE,
-        LEVEL_INFO,
-        LEVEL_DEBUG,
-        LEVEL_MAX,
+        FATAL,
+        ERROR,
+        WARN,
+        NOTICE,
+        INFO,
+        DEBUG,
+        MAX,
     };
 
-    Level(LevelType level = LEVEL_INFO);
+    Level(Level::Type level = INFO);
 
     std::string Str() const;
 
-    const Level& operator = (LevelType level);
+    const Level& operator = (Level::Type level);
     const Level& operator = (const Level &other);
 
     bool operator == (const Level &other) const;
@@ -34,9 +34,9 @@ public:
     bool operator > (const Level &other) const;
 
 private:
-    LevelType          m_level;
+    Level::Type        m_level;
 
-    static const char* s_LevelStr[LEVEL_MAX];
+    static const char* s_LevelStr[Level::Type::MAX];
 };
 
 

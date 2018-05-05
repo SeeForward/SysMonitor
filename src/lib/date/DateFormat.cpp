@@ -1,8 +1,11 @@
 #include <time.h>
+#include <iomanip> 
 
 #include "Date.h"
 #include "DateFormat.h"
 
+using std::setw;
+using std::setfill;
 using std::string;
 using std::stringstream;
 
@@ -16,35 +19,35 @@ string DateFormat::Format(const Date& date) const
         switch(GetNextKeyword(i))
         {
             case KEY_YYYY:
-                ss << date.Year();
+                ss << setw(4) << setfill('0') << date.Year();
                 i += 4;
                 break;
             case KEY_YY:
-                ss << date.Year() % 100;
+                ss << setw(2) << setfill('0') << date.Year() % 100;
                 i += 2;
                 break;
             case KEY_MM:
-                ss << date.Month();
+                ss << setw(2) << setfill('0') << date.Month();
                 i += 2;
                 break;
             case KEY_DD:
-                ss << date.Day();
+                ss << setw(2) << setfill('0') << date.Day();
                 i += 2;
                 break;
             case KEY_HH24:
-                ss << date.Hour();
+                ss << setw(2) << setfill('0') << date.Hour();
                 i += 4;
                 break;
             case KEY_HH:
-                ss << (date.Hour() > 12 ? date.Hour() - 12 : date.Hour());
+                ss << setw(2) << setfill('0') << (date.Hour() > 12 ? date.Hour() - 12 : date.Hour());
                 i += 2;
                 break;
             case KEY_MI:
-                ss << date.Minute();
+                ss << setw(2) << setfill('0') << date.Minute();
                 i += 2;
                 break;
             case KEY_SS:
-                ss << date.Second();
+                ss << setw(2) << setfill('0') << date.Second();
                 i += 2;
                 break;
             case KEY_NONE:
