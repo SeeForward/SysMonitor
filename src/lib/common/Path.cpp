@@ -8,6 +8,7 @@
 #	include <stdio.h>			//for sprintf
 #	include <unistd.h>			//for readlink
 #   include <dirent.h>
+#   include <sys/stat.h>
 #endif
 
 using std::string;
@@ -95,6 +96,24 @@ bool Path::IsDirectory() const
     return true;
 }
 
+bool Path::IsFile() const
+{
+    if (m_path.empty())
+    {
+        return false;
+    }
+#ifdef __WINDOWS__
+#else //__LINUX__
+    struct stat st;
+    stat(m_path.c_str(), &st);
+    if (!S_ISREG(st.st_mode))
+    {
+       return false;
+    }
+#endif 
+    return true;
+}
+
 string Path::ExtractFileName() const
 {
 	size_t pos = m_path.find_last_of(PATH_SEPERATOR);
@@ -127,7 +146,7 @@ bool Path::operator != (const Path &other) const
     return (m_path != other.m_path);
 }
 
-string Path::GetExecuteFilePath()
+Path Path::GetExecuteFilePath()
 {
 	char path[1024] = {0};
 
@@ -140,9 +159,9 @@ string Path::GetExecuteFilePath()
 	int ret = readlink(link, path, sizeof(path)/sizeof(path[0]) - 1);
 	if (ret < 0)
     {
-		return "";
+		return Path("");
 	}
 #endif
 
-	return string(path);
+	return Path(string(path));
 }

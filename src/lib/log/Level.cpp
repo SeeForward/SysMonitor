@@ -30,3 +30,28 @@ bool Level::operator == (const Level &other) const
 {
     return m_level == other.m_level;
 }
+
+bool Level::operator != (const Level &other) const
+{
+    return m_level != other.m_level;
+}
+
+bool Level::operator <= (const Level &other) const
+{
+    return m_level <= other.m_level;
+}
+
+bool Level::operator >= (const Level &other) const
+{
+    return m_level >= other.m_level;
+}
+
+bool Level::operator < (const Level &other) const
+{
+    return m_level < other.m_level;
+}
+
+bool Level::operator > (const Level &other) const
+{
+    return m_level > other.m_level;
+}

@@ -21,11 +21,17 @@ public:
 
     std::string Str() const;
 
-    const Level& operator= (LevelType level);
-
-    const Level& operator= (const Level &other);
+    const Level& operator = (LevelType level);
+    const Level& operator = (const Level &other);
 
     bool operator == (const Level &other) const;
+    bool operator != (const Level &other) const;
+
+    bool operator <= (const Level &other) const;
+    bool operator >= (const Level &other) const;
+
+    bool operator < (const Level &other) const;
+    bool operator > (const Level &other) const;
 
 private:
     LevelType          m_level;

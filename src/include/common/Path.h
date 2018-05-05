@@ -19,6 +19,8 @@ public:
 
     bool IsDirectory() const;
 
+    bool IsFile() const;
+
 	std::string ExtractFileName() const;
 
 	std::string ExtractPath() const;
@@ -27,7 +29,7 @@ public:
 
     bool operator != (const Path &other) const;
 
-    static std::string GetExecuteFilePath();
+    static Path GetExecuteFilePath();
 
 private:
 	std::string m_path;
