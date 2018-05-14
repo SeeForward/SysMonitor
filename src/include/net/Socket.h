@@ -1,7 +1,7 @@
 #ifndef __I_SOCKET_H__
 #define __I_SOCKET_H__
 
-#include "type_def.h"
+#include "TypeDef.h"
 #include "SocketAddress.h"
 
 class Socket

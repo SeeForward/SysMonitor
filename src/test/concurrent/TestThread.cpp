@@ -1,7 +1,7 @@
 #include <iostream>
 #include "Thread.h"
-#include "system_tool.h"
-#include "mutex.h"
+#include "SystemTool.h"
+#include "Mutex.h"
 
 using namespace std;
 

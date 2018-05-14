@@ -1,7 +1,7 @@
 #ifndef __STRING_UTIL_H__
 #define __STRING_UTIL_H__
 
-#include "type_def.h"
+#include "TypeDef.h"
 #include <string>
 #include <vector>
 #include <sstream>

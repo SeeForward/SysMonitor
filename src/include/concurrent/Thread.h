@@ -1,9 +1,9 @@
 #ifndef __THREAD_H__
 #define __THREAD_H__
 
-#include "type_def.h"
+#include "TypeDef.h"
 #include "IRunable.h"
-#include "uncopyable.h"
+#include "UnCopyable.h"
 #include "SmartPtr.h"
 
 #ifdef __WINDOWS__

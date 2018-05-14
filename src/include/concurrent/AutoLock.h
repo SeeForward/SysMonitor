@@ -3,7 +3,7 @@
 #define __AUTO_LOCK_H__
 
 #include "ILock.h"
-#include "uncopyable.h"
+#include "UnCopyable.h"
 
 class AutoLock: public UnCopyable
 {
