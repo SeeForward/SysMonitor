@@ -2,6 +2,7 @@ AUTOMAKE_OPTIONS=foreign
 SUBDIRS=    src/lib/common \
             src/lib/concurrent \
             src/lib/date \
+            src/lib/json \
             src/lib/log \
             src/lib/monitor \
             src/lib/net \
