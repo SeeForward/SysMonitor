@@ -47,6 +47,7 @@ AC_CONFIG_FILES([Makefile
                  src/test/common/Makefile
                  src/test/concurrent/Makefile
                  src/test/date/Makefile
+                 src/test/json/Makefile
                  src/test/log/Makefile
                  src/test/monitor/Makefile
                  src/test/net/Makefile

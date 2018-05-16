@@ -10,6 +10,7 @@ SUBDIRS=    src/lib/common \
             src/test/common \
             src/test/concurrent \
             src/test/date \
+            src/test/json \
             src/test/log \
             src/test/monitor \
             src/test/net \
