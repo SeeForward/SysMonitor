@@ -1,12 +1,12 @@
 #ifndef __SMART_PTR_H__
 #define __SMART_PTR_H__
 
-#include "RefObj.h"
+#include "RefObject.h"
 
 #include <algorithm>
 
 template <typename T>
-class SmartPtr : public RefObj
+class SmartPtr : public RefObject
 {
 public:
     typedef T  ElementType;
@@ -16,10 +16,10 @@ public:
 
     SmartPtr(T* p) : m_ptr(p) {}
 
-    SmartPtr(const SmartPtr<T>& other) : RefObj(other), m_ptr(other.m_ptr) {}
+    SmartPtr(const SmartPtr<T>& other) : RefObject(other), m_ptr(other.m_ptr) {}
 
     template <typename T1>
-    SmartPtr(const SmartPtr<T1>& other) : RefObj(other), m_ptr(dynamic_cast<T>(other.m_ptr)) {}
+    SmartPtr(const SmartPtr<T1>& other) : RefObject(other), m_ptr(dynamic_cast<T>(other.m_ptr)) {}
 
     virtual ~SmartPtr()
     {
@@ -74,7 +74,7 @@ protected:
     void Swap(SmartPtr<T>& other)
     {
         std::swap(m_ptr, other.m_ptr);
-        RefObj::Swap(other);
+        RefObject::Swap(other);
     }
 
 private:

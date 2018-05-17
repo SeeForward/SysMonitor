@@ -1,24 +1,24 @@
-#include "RefObj.h"
+#include "RefObject.h"
 
 #include <algorithm>
 
-RefObj::RefObj()
+RefObject::RefObject()
 {
     m_pCnt = new Atomic(1);
 }
 
-RefObj::RefObj(const RefObj &other)
+RefObject::RefObject(const RefObject &other)
 {
     m_pCnt = other.m_pCnt;
     IncRef();
 }
 
-RefObj::~RefObj()
+RefObject::~RefObject()
 {
     DecRef();
 }
 
-const RefObj& RefObj::operator=(const RefObj &other)
+const RefObject& RefObject::operator=(const RefObject &other)
 {
     if (this != &other)
     {
@@ -29,7 +29,7 @@ const RefObj& RefObj::operator=(const RefObj &other)
     return *this;
 }
 
-int RefObj::Value() const
+int RefObject::Value() const
 {
     if (m_pCnt)
     {
@@ -38,7 +38,7 @@ int RefObj::Value() const
     return 0;
 }
 
-void RefObj::IncRef() const
+void RefObject::IncRef() const
 {
     if (m_pCnt)
     {
@@ -46,7 +46,7 @@ void RefObj::IncRef() const
     }
 }
 
-void RefObj::DecRef() const
+void RefObject::DecRef() const
 {
     if (NULL == m_pCnt)
     {
@@ -60,7 +60,7 @@ void RefObj::DecRef() const
     }
 }
 
-void RefObj::Swap(const RefObj &other)
+void RefObject::Swap(const RefObject &other)
 {
     std::swap(m_pCnt, other.m_pCnt);
 }
