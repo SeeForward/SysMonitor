@@ -14,7 +14,7 @@ public:
 
     SmartPtr() : m_ptr(NULL) {}
 
-    explicit SmartPtr(T* p) : m_ptr(p) {}
+    SmartPtr(T* p) : m_ptr(p) {}
 
     SmartPtr(const SmartPtr<T>& other) : RefObj(other), m_ptr(other.m_ptr) {}
 
@@ -23,8 +23,7 @@ public:
 
     virtual ~SmartPtr()
     {
-        DecRef();
-        if (0 == Value())
+        if (1 == Value())
         {
             delete m_ptr;
             m_ptr = NULL;
