@@ -13,7 +13,9 @@ int main(int argc, const char* argv[])
     sock.connect(ep);
 
     boost::system::error_code rc;
-    sock.write_some(buffer("client msg\n"), rc);
+    //sock.write_some(buffer("client msg"), rc);
+    uint32_t num = 12345;
+    sock.write_some(buffer((char*)&num, sizeof(num)), rc);
     if (rc)
     {
        cout << "client send msg error" << endl;

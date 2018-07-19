@@ -36,6 +36,7 @@ AC_CHECK_FUNCS([getmntent inet_ntoa memset socket strchr strstr uname])
 
 AC_CONFIG_FILES([Makefile
                  src/app/Makefile
+                 src/lib/asionet/Makefile
                  src/lib/common/Makefile
                  src/lib/concurrent/Makefile
                  src/lib/date/Makefile
@@ -45,6 +46,7 @@ AC_CONFIG_FILES([Makefile
                  src/lib/monitor/Makefile
                  src/lib/net/Makefile
                  src/lib/system/Makefile
+                 src/test/asionet/Makefile
                  src/test/boost/Makefile
                  src/test/common/Makefile
                  src/test/concurrent/Makefile

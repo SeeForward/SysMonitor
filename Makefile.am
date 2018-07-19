@@ -1,5 +1,6 @@
 AUTOMAKE_OPTIONS=foreign
-SUBDIRS=    src/lib/common \
+SUBDIRS=    src/lib/asionet \
+            src/lib/common \
             src/lib/concurrent \
             src/lib/date \
             src/lib/ipc \
@@ -8,6 +9,7 @@ SUBDIRS=    src/lib/common \
             src/lib/monitor \
             src/lib/net \
             src/lib/system \
+            src/test/asionet \
             src/test/boost \
             src/test/common \
             src/test/concurrent \

@@ -19,10 +19,13 @@ int main(int argc, const char* argv[])
         cout << sock.remote_endpoint().address() << endl;
 
         boost::system::error_code rc;
-    	char buf[512];
-    	size_t read = sock.read_some(buffer(buf)); 
+    	//char buf[512];
+    	//size_t read = sock.read_some(buffer(buf)); 
+    	//cout << buf << endl;
 
-    	cout << buf << endl;
+    	uint32_t num = 0;
+    	size_t read = sock.read_some(buffer((char*)&num, sizeof(num))); 
+	cout << num << endl;
 
         sock.write_some(buffer("server msg"), rc);
         if (rc)

@@ -8,4 +8,6 @@ test_client_LDADD=-lboost_system
 test_server_SOURCES=TestServer.cpp
 test_server_LDADD=-lboost_system
 
-#INCLUDES=-I$(top_srcdir)/src/include/
+INCLUDES=   -I$(top_srcdir)/src/include/ \
+            -I$(top_srcdir)/src/include/common \
+            -I$(top_srcdir)/src/include/net

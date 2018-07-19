@@ -45,7 +45,7 @@ public:
         return NULL == m_ptr;
     }
 
-    T* Get() const
+    T* Get() //const
     {
         return m_ptr;
     }

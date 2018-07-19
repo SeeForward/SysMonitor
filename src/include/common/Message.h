@@ -2,10 +2,9 @@
 #define __MESSAGE_H__
 
 #include "SmartPtr.h"
-#include "UnCopyable.h"
 #include "MessageType.h"
 
-class Message : public UnCopyable
+class Message
 {
 public:
     Message() : m_type(MSG_TYPE_INVALID) {}
