@@ -43,10 +43,11 @@ int Client::Nego()
 
 void Client::OnData(uint8_t *pData, uint32_t len)
 {
-        string str((char*)pData + sizeof(len), len - sizeof(len));
-        cout << "recv data" << endl;
-        cout << str<< endl;
+    string str((char*)pData + NET_HEAD_LEN, len - NET_HEAD_LEN);
+    cout << "recv data" << endl;
+    cout << str<< endl;
 }
+
 /*
 int Client::OnError(ErrorCode &ec)
 {

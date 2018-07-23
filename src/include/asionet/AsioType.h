@@ -8,6 +8,8 @@
 #define AsioBuffer           boost::asio::buffer
 #define ErrorPlaceholder     boost::asio::placeholders::error
 
+#define NET_HEAD_LEN         sizeof(uint32_t)
+
 typedef boost::system::error_code           ErrorCode;
 
 typedef boost::asio::streambuf              StreamBufType;

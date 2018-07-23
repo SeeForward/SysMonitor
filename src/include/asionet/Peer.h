@@ -23,13 +23,13 @@ public:
     virtual void HeadRecvHandler(const ErrorCode &ec);
     virtual void BodyRecvHandler(const ErrorCode &ec);
 
-    virtual void OnData(uint8_t *pData, uint32_t len) {}
+    virtual void OnData(uint8_t *pData, uint32_t len);
 
     virtual int OnError(const ErrorCode &ec);
 protected:
 public:
     SocketPtr  m_spSock;
-    // TODO: muti recv
+
     uint8_t   *m_pData;
     uint32_t   m_len;
 };
