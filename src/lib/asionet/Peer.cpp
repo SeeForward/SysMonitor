@@ -8,15 +8,13 @@ using namespace std;
 
 Peer::Peer(IOServiceType &service) : m_spSock(new SocketType(service))
 {
-	//AsyncRecv();
+    m_pData = NULL;
+    m_len = 0;
 }
 
-Peer::Peer(SocketPtr spSock) : m_spSock(spSock)
-{
-	//AsyncRecv();
-}
+Peer::Peer(SocketPtr spSock) : m_spSock(spSock) {}
 
-Peer::~Peer() {}
+Peer::~Peer() {cout << "peer desconsturct" << endl;}
 
 bool Peer::Vaild()
 {
@@ -31,18 +29,21 @@ void Peer::Close()
 bool Peer::Send(uint8_t *pData, uint32_t len)
 {
     cout << "peer send" << endl;
+    cout << "send len:" << *((uint32_t *)pData) << endl;
     async_write(*m_spSock.Get(), AsioBuffer(pData, len),
-                            boost::bind(&Peer::SendHandler, this, ErrorPlaceholder));
+                            boost::bind(&Peer::SendHandler, this, pData, len, ErrorPlaceholder));
 
     return true;
 }
 
-void Peer::SendHandler(const ErrorCode &ec)
+void Peer::SendHandler(uint8_t *pData, uint32_t len, const ErrorCode &ec)
 {
+    delete[] pData;
+    pData = NULL;
+    cout << "Len :" << len << endl;
     if (ec)
     {
-        cout << ec.value() << endl;
-        cout << ec.category().name() << endl;
+        OnError(ec);
     }
     cout << "send ok" << endl;
     return ;
@@ -60,9 +61,7 @@ void Peer::HeadRecvHandler(const ErrorCode &ec)
     cout << "recv head" << endl;
     if (ec)
     {
-        Close();
-        cout << ec.value() << endl;
-        cout << ec.category().name() << endl;
+        OnError(ec);
         return ;
     }
 
@@ -77,9 +76,7 @@ void Peer::BodyRecvHandler(const ErrorCode &ec)
     cout << "recv body" << endl;
     if (ec)
     {
-        cout << ec.value() << endl;
-        cout << ec.category().name() << endl;
-        Close();
+        OnError(ec);
         return ;
     }
 
@@ -89,3 +86,9 @@ void Peer::BodyRecvHandler(const ErrorCode &ec)
                     boost::bind(&Peer::HeadRecvHandler, this, ErrorPlaceholder));
 }
 
+int Peer::OnError(const ErrorCode &ec)
+{
+    cout << ec.value() << endl;
+    cout << ec.category().name() << endl;
+    return -ec.value();
+}

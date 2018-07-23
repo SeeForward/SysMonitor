@@ -32,8 +32,6 @@ int Client::Nego()
 {
 	NetMessagePtr pNegoMsg = new NetMessage(1, "nego");
 
-	//return Send(pNegoMsg);
-
     string str;
     pNegoMsg->ToStr(str);
     uint32_t size = str.size();
@@ -49,3 +47,8 @@ void Client::OnData(uint8_t *pData, uint32_t len)
         cout << "recv data" << endl;
         cout << str<< endl;
 }
+/*
+int Client::OnError(ErrorCode &ec)
+{
+        return ;
+}*/

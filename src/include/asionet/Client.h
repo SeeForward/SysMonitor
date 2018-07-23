@@ -16,7 +16,6 @@ public:
     int Connect(const AddressType &addr, int port);
     int Connect(const EndpointType &ep);
 
-    //virtual void OnMessage(NetMessagePtr pMsg);
     virtual void OnData(uint8_t *pData, uint32_t len);
 
 protected:

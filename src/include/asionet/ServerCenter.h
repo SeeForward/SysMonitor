@@ -13,21 +13,13 @@ class ServerCenter
 public:
 
 public:
-    ServerPtr Get(int serverType, SocketPtr spSock);
 
-    void Del(ServerPtr pServer)
-    {
-        
-    }
 
-    bool Register(int serverType, CREATEFUNC create);
 
-private:
-    void Add(ServerPtr pServer)
-    {
-        m_servers[m_id] = pServer;
-        ++m_id;
-    }
+
+    void Add(ServerPtr pServer);
+
+    void Del(ServerPtr pServer);
 
 private:
     ServerCenter() { m_id = 0;}
@@ -37,8 +29,6 @@ private:
     int m_id;
 
     std::map<int, ServerPtr> m_servers;
-
-    std::map<int, CREATEFUNC> m_entrance;
 };
 
 

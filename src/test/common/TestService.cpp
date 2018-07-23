@@ -24,7 +24,7 @@ public:
         return true;
     }
 
-	static void Stop(int)
+    static void Stop(int)
     {
         syslog(LOG_INFO, "program end.");
         m_stop = true;

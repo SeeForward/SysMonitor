@@ -1,25 +1,12 @@
 #include "ServerCenter.h"
-
-
-ServerPtr ServerCenter::Get(int serverType, SocketPtr spSock)
+ 
+void ServerCenter::Add(ServerPtr pServer)
 {
-    std::map<int, CREATEFUNC>::iterator iter = m_entrance.find(serverType);
-    if (m_entrance.end() != iter)
-    {
-        cout << "ServerFactory:" << spSock->remote_endpoint().address() << endl;
+    m_servers[m_id] = pServer;
+    ++m_id;
+}
 
-        ServerPtr spServer((iter->second)(spSock));
-        if (spServer)
-        {
-            Add(spServer);
-            return spServer;
-        }
-    }
-    return NULL;
-}    
-
-bool ServerCenter::Register(int serverType, CREATEFUNC create)
+void ServerCenter::Del(ServerPtr pServer)
 {
-	m_entrance[serverType] = create;
-	return true;
+    
 }

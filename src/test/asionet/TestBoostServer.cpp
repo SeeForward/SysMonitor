@@ -1,5 +1,6 @@
 #include "Listener.h"
 #include "ServerCenter.h"
+#include "ServerFactory.h"
 
 #include <iostream>
 
@@ -8,7 +9,7 @@ using namespace std;
 int main(int argc, const char* argv[])
 {
 
-    Singleton<ServerCenter>::Instance().Register(1, CreateServer);
+    Singleton<ServerFactory>::Instance().Register(1, CreateServer);
 
     IOServiceType ios;
     Listener listener(ios, 12345);
