@@ -30,8 +30,9 @@ protected:
 public:
     SocketPtr  m_spSock;
 
-    uint8_t   *m_pData;
-    uint32_t   m_len;
+    uint8_t   *m_pBuf;
+    uint32_t   m_bufLen;
+    uint32_t   m_bodyLen;
 };
 
 #endif //__PEER_H__

@@ -8,13 +8,26 @@ using namespace std;
 
 Peer::Peer(IOServiceType &service) : m_spSock(new SocketType(service))
 {
-    m_pData = NULL;
-    m_len = 0;
+    m_pBuf = NULL;
+    m_bufLen = 0;
+    m_bodyLen = 0;
 }
 
-Peer::Peer(SocketPtr spSock) : m_spSock(spSock) {}
+Peer::Peer(SocketPtr spSock) : m_spSock(spSock)
+{
+    m_pBuf = NULL;
+    m_bufLen = 0;
+    m_bodyLen = 0;
+}
 
-Peer::~Peer() {cout << "peer desconsturct" << endl;}
+Peer::~Peer()
+{
+    delete[] m_pBuf;
+    m_bufLen = 0;
+    m_bodyLen = 0;
+
+    cout << "peer desconsturct" << endl;
+}
 
 bool Peer::Vaild()
 {
@@ -53,7 +66,7 @@ void Peer::AsyncRecv()
 {
     cout << "peer recv" << endl;
 
-    async_read(*m_spSock.Get(), AsioBuffer(&m_len, NET_HEAD_LEN), 
+    async_read(*m_spSock.Get(), AsioBuffer(&m_bodyLen, NET_HEAD_LEN), 
                     boost::bind(&Peer::HeadRecvHandler, this, ErrorPlaceholder));
 }
 
@@ -65,14 +78,20 @@ void Peer::HeadRecvHandler(const ErrorCode &ec)
         OnError(ec);
         return ;
     }
-    cout << "recv body len:" << m_len << endl;
+    cout << "recv body len:" << m_bodyLen << endl;
 
-    int32_t len = m_len + NET_HEAD_LEN;
+    int32_t len = m_bodyLen + NET_HEAD_LEN;
     cout << "recv sum len:" << len << endl;
-    m_pData = new uint8_t[len];
-    memcpy(m_pData, &m_len, NET_HEAD_LEN);
+    if (m_bufLen < len)
+    {
+        delete[] m_pBuf;
+        m_pBuf = new uint8_t[len];
+        m_bufLen = len;
+    }
 
-    async_read(*m_spSock.Get(), AsioBuffer(m_pData + NET_HEAD_LEN, m_len),
+    memcpy(m_pBuf, &m_bodyLen, NET_HEAD_LEN);
+
+    async_read(*m_spSock.Get(), AsioBuffer(m_pBuf + NET_HEAD_LEN, m_bodyLen),
                     boost::bind(&Peer::BodyRecvHandler, this, ErrorPlaceholder));
 }
 
@@ -85,11 +104,9 @@ void Peer::BodyRecvHandler(const ErrorCode &ec)
         return ;
     }
 
-    OnData(m_pData, m_len + NET_HEAD_LEN);
-    //delete[] m_pData;
-    //m_pData = NULL;
+    OnData(m_pBuf, m_bodyLen + NET_HEAD_LEN);
 
-    async_read(*m_spSock.Get(), AsioBuffer(&m_len, NET_HEAD_LEN),
+    async_read(*m_spSock.Get(), AsioBuffer(&m_bodyLen, NET_HEAD_LEN),
                     boost::bind(&Peer::HeadRecvHandler, this, ErrorPlaceholder));
 }
 
