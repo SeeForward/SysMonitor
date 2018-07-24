@@ -1,5 +1,11 @@
 #include "Server.h"
 
+Server::Server(SocketPtr spSock) : Peer(spSock)
+{
+    m_id = 0;
+    AsyncRecv();
+    cout << "server construcnt" << endl;
+}
 
 void Server::OnData(uint8_t *pData, uint32_t len)
 {

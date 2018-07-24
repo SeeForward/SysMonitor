@@ -10,17 +10,19 @@ using namespace std;
 class Server : public Peer
 {
 public:
-    Server(SocketPtr spSock) : Peer(spSock)
-    {
-        AsyncRecv();
-        cout << "server construcnt" << endl;
-    }
+    Server(SocketPtr spSock);
 
     virtual ~Server() {}
+
+    void SetId(uint32_t id) {m_id = id;}
+    uint32_t GetId() {return m_id;}
 
 protected:
 
     void OnData(uint8_t *pData, uint32_t len);
+
+private:
+    uint32_t m_id;
 };
 
 Server* CreateServer(SocketPtr spSock);

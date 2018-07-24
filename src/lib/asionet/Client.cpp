@@ -30,15 +30,9 @@ int Client::Connect(const EndpointType &ep)
 
 int Client::Nego()
 {
-	NetMessagePtr pNegoMsg = new NetMessage(1, "nego");
-
-    string str;
-    pNegoMsg->ToStr(str);
-    uint32_t size = str.size();
-    uint8_t *pData = new uint8_t[size + sizeof(uint32_t)];
-    memcpy(pData, &size, sizeof(uint32_t));
-    memcpy(pData + sizeof(uint32_t), str.c_str(), size); 
-    return Send(pData, size + sizeof(uint32_t));
+    uint32_t serverType = 1;
+    uint32_t *pType = new uint32_t(serverType); 
+    return Send((uint8_t*)pType, NET_HEAD_LEN);
 }
 
 void Client::OnData(uint8_t *pData, uint32_t len)

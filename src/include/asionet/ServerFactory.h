@@ -12,15 +12,13 @@ struct SocketCtx
 {
     SocketCtx()
     {
-            m_id = 0;
-            m_pData = NULL;
-            m_len = 0;
+        m_id = 0;
+        m_type = -1;
     }
 
     SocketPtr m_spS;
-    int       m_id;
-    uint8_t  *m_pData;
-    uint32_t  m_len;
+    uint32_t  m_id;
+    uint32_t  m_type;
 };
 
 class ServerFactory
@@ -29,12 +27,11 @@ class ServerFactory
 public:
     bool Add(SocketPtr spSock);
     
-    bool Register(int serverType, CREATEFUNC create);
+    bool Register(uint32_t serverType, CREATEFUNC create);
 
 private:
-    void AsyncRecv(SocketCtx *pSC);
-    void HeadRecvHandler(SocketCtx *pSC, const ErrorCode &ec);
-    void BodyRecvHandler(SocketCtx *pSC, const ErrorCode &ec);
+    void AsyncRecvType(SocketCtx *pSC);
+    void TypeRecvHandler(SocketCtx *pSC, const ErrorCode &ec);
 
     void CreateServer(SocketCtx &sc);
 
@@ -45,9 +42,9 @@ private:
 
 private:
     // TODO : add mutex
-    int m_id;
-    std::map<int, SocketCtx>  m_socks;
-    std::map<int, CREATEFUNC> m_entrance;
+    uint32_t m_id;
+    std::map<uint32_t, SocketCtx>  m_socks;
+    std::map<uint32_t, CREATEFUNC> m_entrance;
 };
 
 #endif //__SERVER_FACTORY_H__

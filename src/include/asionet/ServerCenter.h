@@ -13,10 +13,6 @@ class ServerCenter
 public:
 
 public:
-
-
-
-
     void Add(ServerPtr pServer);
 
     void Del(ServerPtr pServer);
