@@ -18,8 +18,9 @@ public:
     uint32_t GetId() {return m_id;}
 
 protected:
-
     void OnData(uint8_t *pData, uint32_t len);
+
+    virtual int OnError(const ErrorCode &ec);
 
 private:
     uint32_t m_id;

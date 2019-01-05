@@ -14,6 +14,13 @@ void Server::OnData(uint8_t *pData, uint32_t len)
     Send(pSend, len);
 }
 
+int Server::OnError(const ErrorCode &ec)
+{
+    cout << ec.value() << endl;
+    cout << ec.category().name() << endl;
+    return -ec.value();
+}
+
 Server* CreateServer(SocketPtr spSock)
 {
     return new Server(spSock);

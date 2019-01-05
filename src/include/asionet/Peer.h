@@ -16,7 +16,6 @@ public:
     void Close();
 
 protected:
-public:
    virtual void SendHandler(uint8_t *pData, uint32_t len, const ErrorCode &ec);
 
     virtual void AsyncRecv();
@@ -27,7 +26,6 @@ public:
 
     virtual int OnError(const ErrorCode &ec);
 protected:
-public:
     SocketPtr  m_spSock;
 
     uint8_t   *m_pBuf;
