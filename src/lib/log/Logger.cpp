@@ -9,32 +9,32 @@ Logger::~Logger() {}
 
 void Logger::Fatal(const string &content)
 {
-    Log(Level(Level::Type::FATAL), content);
+    Log(Level(Level::FATAL), content);
 }
 
 void Logger::Error(const string &content)
 {
-    Log(Level(Level::Type::ERROR), content);
+    Log(Level(Level::ERROR), content);
 }
 
 void Logger::Warn(const string &content)
 {
-    Log(Level(Level::Type::WARN), content);
+    Log(Level(Level::WARN), content);
 }
 
 void Logger::Notice(const string &content)
 {
-    Log(Level(Level::Type::NOTICE), content);
+    Log(Level(Level::NOTICE), content);
 }
 
 void Logger::Info(const string &content)
 {
-    Log(Level(Level::Type::INFO), content);
+    Log(Level(Level::INFO), content);
 }
 
 void Logger::Debug(const string &content)
 {
-    Log(Level(Level::Type::DEBUG), content);
+    Log(Level(Level::DEBUG), content);
 }
 
 void Logger::SetLevel(const Level& level)

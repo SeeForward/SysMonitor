@@ -36,7 +36,7 @@ public:
 private:
     Level::Type        m_level;
 
-    static const char* s_LevelStr[Level::Type::MAX];
+    static const char* s_LevelStr[Level::MAX];
 };
 
 

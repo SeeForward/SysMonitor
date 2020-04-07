@@ -4327,7 +4327,7 @@ JSONCPP_STRING valueToString(double value, bool useSpecialFloats, unsigned int p
   JSONCPP_STRING buffer(size_t(36), '\0');
   while (true) {
       int len = snprintf(&*buffer.begin(), buffer.size(),
-                         (precisionType == PrecisionType::significantDigits) ? "%.*g" : "%.*f",
+                         (precisionType == significantDigits) ? "%.*g" : "%.*f",
                          precision, value);
       assert(len >= 0);
       size_t wouldPrint = static_cast<size_t>(len);
@@ -4342,7 +4342,7 @@ JSONCPP_STRING valueToString(double value, bool useSpecialFloats, unsigned int p
   buffer.erase(fixNumericLocale(buffer.begin(), buffer.end()), buffer.end());
 
   // strip the zero padding from the right
-  if (precisionType == PrecisionType::decimalPlaces) {
+  if (precisionType == decimalPlaces) {
     buffer.erase(fixZerosInTheEnd(buffer.begin(), buffer.end()), buffer.end());
   }
 
@@ -5366,9 +5366,9 @@ StreamWriter* StreamWriterBuilder::newStreamWriter() const
   }
   PrecisionType precisionType(significantDigits);
   if (pt_str == "significant") {
-    precisionType = PrecisionType::significantDigits;
+    precisionType = significantDigits;
   } else if (pt_str == "decimal") {
-    precisionType = PrecisionType::decimalPlaces;
+    precisionType = decimalPlaces;
   } else {
     throwRuntimeError("precisionType must be 'significant' or 'decimal'");
   }

@@ -15,8 +15,8 @@ int main(int argc, const char * argv[])
     int rc = client.Connect(serverAddr);
     if (0 != rc)
     {
-        cout << "connect error, rc : " << errno << endl;
-        return -errno;
+        cout << "connect error, rc : " << rc << endl;
+        return -rc;
     }
 
     cout << "local: " << client.LocalAdderss().ToStr() << endl;
@@ -26,15 +26,15 @@ int main(int argc, const char * argv[])
     rc = client.Send((uint8_t*)buf, strlen(buf));
     if (strlen(buf) != rc)
     {
-        cout << "send error, rc : " << errno << endl;
-        return -errno;
+        cout << "send error, rc : " << rc << endl;
+        return -rc;
     }
 
     rc = client.Recv((uint8_t*)buf, 100);
     if (rc <= 0)
     {
-        cout << "recv error, rc : " << errno << endl;
-        return -errno;
+        cout << "recv error, rc : " << rc << endl;
+        return -rc;
     }
 
     buf[rc] = '\0';

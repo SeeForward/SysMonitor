@@ -4,10 +4,11 @@
 
 using std::string;
 using std::ios;
+using std::fstream;
 
 FileAppender::FileAppender(const string &name, const DateFormat &dateFormat, const string &filePath) : Appender(name, dateFormat)
 {
-    m_ostream.open(filePath, ios::out|ios::app);
+    m_ostream.open(filePath.c_str(), fstream::out|fstream::app);
 }
 
 FileAppender::~FileAppender()

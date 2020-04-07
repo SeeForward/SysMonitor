@@ -2,7 +2,7 @@
 
 using std::string;
 
-const char* Level::s_LevelStr[Level::Type::MAX] = {"FATAL", "ERROR", "WARN", "NOTICE", "INFO", "DEBUG"};
+const char* Level::s_LevelStr[Level::MAX] = {"FATAL", "ERROR", "WARN", "NOTICE", "INFO", "DEBUG"};
 
 
 Level::Level(Level::Type level) : m_level(level) {}

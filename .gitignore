@@ -27,3 +27,15 @@
 *.exe
 *.out
 *.app
+
+# dependent files
+.deps
+
+# Makefile
+Makefile
+
+# log files
+*.log
+
+# cache file
+*.cache

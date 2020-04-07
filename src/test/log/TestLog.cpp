@@ -46,7 +46,7 @@ void test_file_append()
     DateFormat dateFormat;
     FileAppender ap("file", dateFormat, Path::GetExecuteFilePath().ExtractPath() + "app.log");
 
-    if (!ap.Append(Level(Level::Type::ERROR), "this a file append test"))
+    if (!ap.Append(Level(Level::ERROR), "this a file append test"))
     {
         cout << "Err" << endl;
     }

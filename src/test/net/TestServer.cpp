@@ -14,8 +14,8 @@ int main(int argc, const char * argv[])
     int rc = server.Listen(5);
     if (rc < 0)
     {
-        cout << "listen error : " << errno << endl;
-        return -errno;
+        cout << "listen error : " << rc << endl;
+        return -rc;
     }
 
     ClientSocket client;
@@ -23,8 +23,8 @@ int main(int argc, const char * argv[])
     rc = server.Accept(client);
     if (rc < 0)
     {
-        cout << "accept error : " << errno << endl;
-        return -errno;
+        cout << "accept error : " << rc << endl;
+        return -rc;
     }
 
     cout << "local: " << client.LocalAdderss().ToStr() << endl;
@@ -34,8 +34,8 @@ int main(int argc, const char * argv[])
     rc = client.Recv((uint8_t*)buf, 100);
     if (rc <= 0)
     {
-        cout << "recv error : " << errno << endl;
-        return -errno;
+        cout << "recv error : " << rc << endl;
+        return -rc;
     }
 
     buf[rc] = '\0';
@@ -45,8 +45,8 @@ int main(int argc, const char * argv[])
     rc = client.Send((uint8_t*)buf2, strlen(buf2));
     if (strlen(buf2) != rc)
     {
-        cout << "send error : " << errno << endl;
-        return -errno;
+        cout << "send error : " << rc << endl;
+        return -rc;
     }
 
     SleepMs(1000 * 1000);
